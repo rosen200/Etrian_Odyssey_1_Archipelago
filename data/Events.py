@@ -1,0 +1,95 @@
+from dataclasses import dataclass
+
+class EventNames:
+    FENRIR_DEFEATED = "Fenrir Defeated"
+    STRATUM_2_REACHED = "Stratum 2 Reached"
+    DRAGON_EGG_OBTAINED = "Dragon Egg Obtained"
+    MISSION_3_COMPLETED = "Mission 3 Completed"
+    CERNUNOS_DEFEATED = "Cernunos Defeated"
+    COTRANGL_DEFEATED = "Cotrangl Defeated"
+    DISCOVER_CLAW_MARK = "Discover Claw Mark"
+    AZURE_COLOSSUS_QUEST_ACCEPTED = "Azure Colossus Quest Accepted"
+    ANNIHILATE_THE_FOREST_FOLK = "Annihilate the forest folk"
+    MISSION_7_COMPLETED = "Mission 7 Completed"
+    ELEVATOR_ACTIVATED = "Elevator Activated"
+    CARD_KEY_OBTAINED = "Card Key Obtained"
+    ETREANT_DEFEATED = "Etreant Defeat"
+    PRIMEVIL_DEFEATED = "Primevil Defeated"
+
+@dataclass
+class EventInfo:
+    name: str
+    item_name: str
+
+EVENT_FENRIR_DEFEATED = EventInfo(
+    EventNames.FENRIR_DEFEATED,
+    "Fenrir Defeated")
+
+EVENT_STRATUM_2_REACHED = EventInfo(
+    EventNames.STRATUM_2_REACHED,
+    "Stratum 2 Reached")
+
+EVENT_DRAGON_EGG_OBTAINED = EventInfo(
+    EventNames.DRAGON_EGG_OBTAINED,
+    "Dragon Egg Obtained")
+
+EVENT_MISSION_3_COMPLETED = EventInfo(
+    EventNames.MISSION_3_COMPLETED,
+    "Mission 3 Completed")
+
+EVENT_CERNUNOS_DEFEATED = EventInfo(
+    EventNames.CERNUNOS_DEFEATED,
+    "Cernunos defeated")
+
+EVENT_COTRANGL_DEFEATED = EventInfo(
+    EventNames.COTRANGL_DEFEATED,
+    "Cotrangl defeated")
+
+EVENT_DISCOVER_CLAW_MARK = EventInfo(
+    EventNames.DISCOVER_CLAW_MARK,
+    "Discover Claw Mark")
+
+EVENT_AZURE_COLOSSUS_QUEST_ACCEPTED = EventInfo(
+    EventNames.AZURE_COLOSSUS_QUEST_ACCEPTED,
+    "Azure Colossus Quest Accepted")
+
+EVENT_ANNIHILATE_THE_FOREST_FOLK = EventInfo(
+    EventNames.ANNIHILATE_THE_FOREST_FOLK,
+    "Forest Folk Annihilated")
+
+EVENT_MISSION_7_COMPLETED = EventInfo(
+    EventNames.MISSION_7_COMPLETED,
+    "Mission 7 Completed")
+
+EVENT_ELEVATOR_ACTIVATED = EventInfo(
+    EventNames.ELEVATOR_ACTIVATED,
+    "Elevator Activated")
+
+EVENT_CARD_KEY_OBTAINED = EventInfo(
+    EventNames.CARD_KEY_OBTAINED,
+    "Card Key Obtained")
+
+EVENT_ETREANT_DEFEATED = EventInfo(
+    EventNames.ETREANT_DEFEATED,
+    "Etreant Defeated")
+
+EVENT_PRIMEVIL_DEFEATED = EventInfo(
+    EventNames.PRIMEVIL_DEFEATED,
+    "Primevil Defeated")
+
+EVENT_BY_NAME: dict[str, EventInfo] = {
+    EVENT_FENRIR_DEFEATED.name: EVENT_FENRIR_DEFEATED,
+    EVENT_STRATUM_2_REACHED.name:EVENT_STRATUM_2_REACHED,
+    EVENT_DRAGON_EGG_OBTAINED.name:EVENT_DRAGON_EGG_OBTAINED,
+    EVENT_MISSION_3_COMPLETED.name:EVENT_MISSION_3_COMPLETED,
+    EVENT_CERNUNOS_DEFEATED.name:EVENT_CERNUNOS_DEFEATED,
+    EVENT_COTRANGL_DEFEATED.name:EVENT_COTRANGL_DEFEATED,
+    EVENT_DISCOVER_CLAW_MARK.name:EVENT_DISCOVER_CLAW_MARK,
+    EVENT_AZURE_COLOSSUS_QUEST_ACCEPTED.name:EVENT_AZURE_COLOSSUS_QUEST_ACCEPTED,
+    EVENT_ANNIHILATE_THE_FOREST_FOLK.name:EVENT_ANNIHILATE_THE_FOREST_FOLK,
+    EVENT_MISSION_7_COMPLETED.name:EVENT_MISSION_7_COMPLETED,
+    EVENT_ELEVATOR_ACTIVATED.name:EVENT_ELEVATOR_ACTIVATED,
+    EVENT_CARD_KEY_OBTAINED.name:EVENT_CARD_KEY_OBTAINED,
+    EVENT_ETREANT_DEFEATED.name:EVENT_ETREANT_DEFEATED,
+    EVENT_PRIMEVIL_DEFEATED.name:EVENT_PRIMEVIL_DEFEATED
+}
