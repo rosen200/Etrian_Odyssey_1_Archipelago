@@ -21,6 +21,7 @@ from .EncounterGroupBattleProcessor import *
 from .CodexProcessor import *
 from .CompendiumProcessor import *
 from .ConditionalDropProcessor import *
+from .ShopUnlockProcessor import *
 from .simplified_logic.SimplifiedSingleEnemyBattleProcessor import SimplifiedSingleEnemyBattleProcessor
 
 if TYPE_CHECKING:
@@ -39,6 +40,7 @@ class LogicManager:
     codex_processor: CodexProcessor
     compendium_processor: CompendiumProcessor
     conditional_drop_processor: ConditionalDropProcessor
+    #shop_unlock_processor: ShopUnlockProcessor
 
     def __init__(self, options: EtrianOdysseyOptions, player_id: int, fill_default=True) -> None:
         self.logic_data = AllLogicData(fill_default)
@@ -56,6 +58,7 @@ class LogicManager:
         self.conditional_drop_processor = ConditionalDropProcessor()
         self.codex_processor = CodexProcessor(max_stratum, player_id)
         self.compendium_processor = CompendiumProcessor(max_stratum, player_id, self.conditional_drop_processor)
+        #self.shop_unlock_processor = ShopUnlockProcessor()
 
         if fill_default:
             # Initialize class data
@@ -204,6 +207,9 @@ class LogicManager:
     def __update_defeatable_enemies(self, state: CollectionState) -> None:
         self.__update_class_data(state)
 
+        # Note: This may seems like a circular reference (and it logically is), but it is handled by delaying
+        #self.__update_shop_consumable_entries(state)
+
         if self.logic_data.defeatable_enemy.is_stale():
             self.__update_set_logic_data(self.logic_data.defeatable_enemy, self.enemy_battle_processor.can_defeat_enemy, state)
 
@@ -248,7 +254,34 @@ class LogicManager:
         self.__update_fillable_codex_entries(state)
 
         if self.logic_data.compendium_logic_data.is_stale():
-            self.__update_set_logic_data(self.logic_data.compendium_logic_data, self.compendium_processor.can_fill_compendium_entry, state)
+            changed = self.__update_set_logic_data(self.logic_data.compendium_logic_data, self.compendium_processor.can_fill_compendium_entry, state)
+            #if changed:
+                #self.logic_data.set_shop_consumable_stale()
+
+    #def __update_shop_consumable_entries(self, state: CollectionState) -> None:
+    #    # This have dependencies on compendium entries, but this makes a circular reference.
+    #    # To avoid infinite looping, do a direct update of the compendium entries here, instead of a delayed one.
+    #    # This will have the impact of logic being delayed by one step, but it also
+    #    # somewhat represent the need to go back to town anyway.
+    #    is_stale = self.logic_data.shop_consumable_unlock_logic_data.is_stale()
+    #
+    #    self.__update_class_data(state)
+    #
+    #    # Update Codex and Compendium, in order, if they are stale.
+    #    if self.logic_data.codex_logic_data.is_stale():
+    #        self.__update_set_logic_data(self.logic_data.codex_logic_data, self.codex_processor.can_fill_codex_entry, state)
+    #        # But keep it stale.
+    #        self.logic_data.codex_logic_data.set_stale(True)
+    #    if self.logic_data.compendium_logic_data.is_stale():
+    #        is_stale |= self.__update_set_logic_data(self.logic_data.compendium_logic_data, self.compendium_processor.can_fill_compendium_entry, state)
+    #        # But keep it stale.
+    #        self.logic_data.compendium_logic_data.set_stale(True)
+
+    #    # Now compendium is as up to date as can be without being unsafe.
+    #    if is_stale:
+    #        changed = self.__update_set_logic_data(self.logic_data.shop_consumable_unlock_logic_data, self.shop_unlock_processor.can_unlock_item, state)
+    #        if changed:
+    #            self.logic_data.set_battle_stale()
 
     def __update_class_data(self, state: CollectionState) -> None:
         if self.logic_data.class_data.is_stale():
@@ -256,7 +289,7 @@ class LogicManager:
                 self.logic_data.set_battle_stale()
             self.logic_data.class_data.set_stale(False)
 
-    def __update_set_logic_data(self, logic_data: DualIntSetLogicData, can_access: Callable[int, CollectionState, AllLogicData], state: CollectionState) -> None:
+    def __update_set_logic_data(self, logic_data: DualIntSetLogicData, can_access: Callable[int, CollectionState, AllLogicData], state: CollectionState) -> bool:
         new_accessible = set()
         for identifier in logic_data.unaccessible:
             if can_access(identifier, state, self.logic_data):
@@ -267,13 +300,16 @@ class LogicManager:
             logic_data.accessible.add(identifier)
 
         logic_data.set_stale(False)
+        changed = len(new_accessible) > 0
+        return changed
 
-    def __recalculate_class_data(self, state: CollectionState):
-        self.class_processor.recalculate_class_data(self.logic_data, state)
+    def __recalculate_class_data(self, state: CollectionState) -> bool:
+        changed = self.class_processor.recalculate_class_data(self.logic_data, state)
         # TODO decide if this is omitted. Do not set to False, since the data could already be stale.
         self.logic_data.class_data.set_stale(True)
+        return changed
 
-    def __recalculate_set_logic_data(self, logic_data: DualIntSetLogicData, can_access: Callable[int, CollectionState, AllLogicData], state: CollectionState) -> None:
+    def __recalculate_set_logic_data(self, logic_data: DualIntSetLogicData, can_access: Callable[int, CollectionState, AllLogicData], state: CollectionState) -> bool:
         new_unaccessible = set()
         for identifier in logic_data.accessible:
             if not can_access(identifier, state, self.logic_data):
@@ -285,3 +321,6 @@ class LogicManager:
 
         # TODO decide if this is omitted. Do not set to False, since the data could already be stale.
         logic_data.set_stale(True) # For safety.
+
+        changed = len(new_unaccessible) > 0
+        return changed

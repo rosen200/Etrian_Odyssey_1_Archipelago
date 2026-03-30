@@ -22,6 +22,7 @@ if TYPE_CHECKING:
 # Class use id 100 to 108
 # Skill use id 200 to 388
 # Special Skill items use id 600 to 699
+# Special Skill items use id 700 to 750
 # Money use id 900 to 916
 # Items use id 1001 to 2243
 

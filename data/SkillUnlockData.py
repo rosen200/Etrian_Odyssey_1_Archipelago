@@ -429,12 +429,12 @@ ALL_GROUP_SKILLS: list[GroupSkillItem] = [
 ]
 
 class SkillUnlockItems:
-    ALL_SKILLS = SkillItem(600, "All Skills", SkillItemType.ALL)
-    ALL_STATS_SKILLS = MultiClassGroupSkillItem("All Stats Up Skills", 650, [
+    ALL_SKILLS = SkillItem(750, "All Skills", SkillItemType.ALL)
+    ALL_STATS_SKILLS = MultiClassGroupSkillItem("All Stats Up Skills", 751, [
         group_skill.to_skill_item()
         for group_skill in ALL_STATS_GROUP_SKILLS
     ])
-    ALL_GATHERING_SKILLS = MultiClassGroupSkillItem("All Gathering Skills", 651, [
+    ALL_GATHERING_SKILLS = MultiClassGroupSkillItem("All Gathering Skills", 752, [
         group_skill.to_skill_item()
         for group_skill in ALL_GATHERING_GROUP_SKILLS
     ])

@@ -23,6 +23,7 @@ class TreasureData(NamedTuple):
     region: str
     location_id: int
     logic_requirement: TreasureLogicRequirement = TreasureLogicRequirement([], False)
+    required_stratum: int | None = None
 
     def get_full_name(self) -> str:
         return f"{self.region} - {self.name}{' ' if self.name != '' else ''}Chest"
@@ -53,7 +54,7 @@ ALL_TREASURE_DATA: list[TreasureData] = [
     TreasureData(3, 3, "F1", TreasureContentType.Item, 4295, EO1Regions.B3F_MAIN, 1018),  # B3F At [4,25], 0x10C7 - Theriaca A
     TreasureData(3, 4, "F4", TreasureContentType.Money, 500, EO1Regions.B3F_MAIN, 1019, TreasureLogicRequirement([EO1Enemies.RAGELOPE], require_escape=True)),  # B3F At [16,25], 500en
     TreasureData(4, 0, "A1", TreasureContentType.Item, 4284, EO1Regions.B4F_MAIN, 1020),  # B4F At [1,4], 0x10BC - Amrita
-    TreasureData(4, 1, "B4", TreasureContentType.Money, 2000, EO1Regions.B4F_SECRET_AREA, 1021, TreasureLogicRequirement([EO1Enemies.CUTTER])),  # B4F At [19,5], 2000en
+    TreasureData(4, 1, "B4", TreasureContentType.Money, 2000, EO1Regions.B4F_SECRET_AREA, 1021, TreasureLogicRequirement([EO1Enemies.CUTTER]), required_stratum=2),  # B4F At [19,5], 2000en
     TreasureData(4, 2, "B3 East", TreasureContentType.Item, 4280, EO1Regions.B4F_MAIN, 1022),  # B4F At [13,8], 0x10B8 - Medica II
     TreasureData(4, 3, "B3 West", TreasureContentType.Item, 1006, EO1Regions.B4F_MAIN, 1023),  # B4F At [11,9], 0x03EE - Plate
     TreasureData(4, 4, "E4", TreasureContentType.Item, 4308, EO1Regions.B4F_SECRET_AREA, 1024),  # B4F At [19,20], 0x10D4 - Stonard II

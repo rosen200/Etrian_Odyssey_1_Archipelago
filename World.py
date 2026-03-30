@@ -10,7 +10,6 @@ import typing
 from collections.abc import Mapping
 from typing import Any
 
-from rule_builder.cached_world import CachedRuleBuilderWorld
 from worlds.AutoWorld import World
 from .Constant import *
 
@@ -24,6 +23,7 @@ from . import Items, Locations, Regions, Rules, WebWorld
 from base64 import b64encode
 from worlds.Files import APPlayerContainer
 from .Rules import *
+#from rule_builder.cached_world import CachedRuleBuilderWorld
 
 
 #from Utils import visualize_regions
@@ -52,8 +52,8 @@ class EO1Container(APPlayerContainer):
         super().write_contents(opened_zipfile)
         opened_zipfile.writestr("patch", b64encode(bytes(yaml.safe_dump(self.data, sort_keys=False), "utf-8")))
 
-#class EtrianOdysseyWorld(World):
-class EtrianOdysseyWorld(CachedRuleBuilderWorld):
+class EtrianOdysseyWorld(World):
+#class EtrianOdysseyWorld(CachedRuleBuilderWorld):
     """Etrian Odyssey is a dungeon crawler RPG first developed by Atlus in 2007 on the Nintendo DS."""
     game = GAME_NAME
     web = WebWorld.EtrianOdysseyWebWorld()

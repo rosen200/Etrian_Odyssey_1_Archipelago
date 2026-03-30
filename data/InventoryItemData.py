@@ -205,6 +205,7 @@ class EO1EquipmentNames:
     WARHAMMER = "Warhammer"
     ARCANA_ROD = "Arcana Rod"
     SAGE_WAND = "Sage Wand"
+    SHINAI = "Shinai" # This is a custom katana.
     WAKIZASHI = "Wakizashi"
     UCHIGATANA = "Uchigatana"
     OHDACHI = "Ohdachi"
@@ -562,6 +563,7 @@ AXE_DATA: list[EO1EquipmentData] = [
 ]
 
 KATANA_DATA: list[EO1EquipmentData] = [
+    EO1EquipmentData(EO1ItemType.Equipment, 0x048, EO1EquipmentNames.SHINAI, 2244, EO1EquipmentType.Katana), # DmgType: Slash, Secondary DmgType: None, ATK: 10, DEF: 0
     EO1EquipmentData(EO1ItemType.Equipment, 0x049, EO1EquipmentNames.WAKIZASHI, 2051, EO1EquipmentType.Katana), # DmgType: Slash, Secondary DmgType: None, ATK: 20, DEF: 0
     EO1EquipmentData(EO1ItemType.Equipment, 0x04A, EO1EquipmentNames.UCHIGATANA, 2052, EO1EquipmentType.Katana), # DmgType: Slash, Secondary DmgType: None, ATK: 55, DEF: 0
     EO1EquipmentData(EO1ItemType.Equipment, 0x04B, EO1EquipmentNames.OHDACHI, 2053, EO1EquipmentType.Katana), # DmgType: Slash, Secondary DmgType: None, ATK: 90, DEF: 0

@@ -60,13 +60,26 @@ class CompendiumProcessor:
         for enemy_id in ENEMY_BY_DROP_ID[compendium_data.item_id]:
             if enemy_id in logic_data.codex_logic_data.fillable_codex_entries:
                 enemy_data = ENEMY_BY_ID[enemy_id]
-                if enemy_data.item_drop_1 == compendium_data.item_id:
-                    return True
-                elif enemy_data.item_drop_2 == compendium_data.item_id:
+                has_conditional_drop = enemy_data.item_drop_3 != 0
+                if has_conditional_drop:
+                    has_conditional_drop = enemy_data.drop_condition != DropCondition.NONE # Handles "Rare drop" conditionals.
+
+                # If the monster has no conditional drop, then all its drops are fillable.
+                if not has_conditional_drop:
                     return True
 
-                if self.conditional_drop_processor.can_fulfill_drop_condition(enemy_id, logic_data):
-                    return True
+                # Otherwise, conditional drops can nullify regular drops.
+                if enemy_data.item_drop_1 == compendium_data.item_id:
+                    if self.conditional_drop_processor.can_defeat_without_fulfilling_drop_condition(enemy_id, logic_data):
+                        return True
+                elif enemy_data.item_drop_2 == compendium_data.item_id:
+                    if self.conditional_drop_processor.can_defeat_without_fulfilling_drop_condition(enemy_id, logic_data):
+                        return True
+                elif enemy_data.item_drop_3 == compendium_data.item_id:
+                    if self.conditional_drop_processor.can_fulfill_drop_condition(enemy_id, logic_data):
+                        return True
+                else:
+                    raise Exception(f"Enemy {enemy_id} cannot drop item {compendium_data.item_id}.")
 
         return False
 

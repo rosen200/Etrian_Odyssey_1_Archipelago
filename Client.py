@@ -35,8 +35,7 @@ class EtrianOdysseyClient(BizHawkClient):
     async def validate_rom(self, ctx: "BizHawkClientContext") -> bool:
         from CommonClient import logger
 
-        try:
-            rom_name_bytes = (await bizhawk.read(ctx.bizhawk_ctx, [(0, 12, "ROM")]))[0]
+        def __rom_name_match(rom_name_bytes: bytes) -> bool:
             rom_name = bytes([byte for byte in rom_name_bytes if byte != 0]).decode("ascii")
             if rom_name == "ETRIAN1":
                 logger.info("ERROR: You appear to be running an unpatched version of Etrian Odyssey. "
@@ -47,6 +46,20 @@ class EtrianOdysseyClient(BizHawkClient):
                             "this client. Double check your client version against the version being "
                             "used by the generator.")
                 return False
+            return True
+
+        try:
+            try:
+                # Attempt to do this using Bizhawk 2.10+ compatible code.
+                rom_name_bytes = (await bizhawk.read(ctx.bizhawk_ctx, [(0, 12, "ROM")]))[0]
+                if not __rom_name_match(rom_name_bytes):
+                    return False
+            except UnicodeDecodeError:
+                # If this failed, this may be due to running on Bizhawk 2.9.
+                # Attempt to read the rom name from main memory instead.
+                rom_name_bytes = (await bizhawk.read(ctx.bizhawk_ctx, [(0x02BFFA80, 12, BIZHAWK_ARM9_DOMAIN)]))[0]
+                if not __rom_name_match(rom_name_bytes):
+                    return False
         except UnicodeDecodeError:
             return False
         except bizhawk.RequestFailedError:

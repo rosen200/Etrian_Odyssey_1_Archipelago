@@ -69,7 +69,7 @@ class FloorUnlocked(Rule["EtrianOdysseyWorld"], game=GAME_NAME):
 
     @override
     def _instantiate(self, world: EtrianOdysseyWorld) -> Rule.Resolved:
-        return self.Resolved(self.floor, player=world.player, caching_enabled=True)
+        return self.Resolved(self.floor, player=world.player)#, caching_enabled=True)
 
     class Resolved(Rule.Resolved):
         # noinspection PyDataclass
@@ -89,7 +89,7 @@ class CanSurviveRegion(Rule["EtrianOdysseyWorld"], game=GAME_NAME):
 
     @override
     def _instantiate(self, world: EtrianOdysseyWorld) -> Rule.Resolved:
-        return self.Resolved(self.region, player=world.player, caching_enabled=True)
+        return self.Resolved(self.region, player=world.player)#, caching_enabled=True)
 
     class Resolved(Rule.Resolved):
         # noinspection PyDataclass
@@ -113,7 +113,7 @@ class CanDefeatEnemy(Rule["EtrianOdysseyWorld"], game=GAME_NAME):
 
     @override
     def _instantiate(self, world: EtrianOdysseyWorld) -> Rule.Resolved:
-        return self.Resolved(self.enemy, player=world.player, caching_enabled=True)
+        return self.Resolved(self.enemy, player=world.player)#, caching_enabled=True)
 
     class Resolved(Rule.Resolved):
         # noinspection PyDataclass
@@ -134,7 +134,7 @@ class CanDefeatEncounter(Rule["EtrianOdysseyWorld"], game=GAME_NAME):
 
     @override
     def _instantiate(self, world: EtrianOdysseyWorld) -> Rule.Resolved:
-        return self.Resolved(self.enemies, player=world.player, caching_enabled=True)
+        return self.Resolved(self.enemies, player=world.player)#, caching_enabled=True)
 
     class Resolved(Rule.Resolved):
         # noinspection PyDataclass
@@ -156,7 +156,7 @@ class CanFillCodexEntry(Rule["EtrianOdysseyWorld"], game=GAME_NAME):
 
     @override
     def _instantiate(self, world: EtrianOdysseyWorld) -> Rule.Resolved:
-        return self.Resolved(self.enemy_id, player=world.player, caching_enabled=True)
+        return self.Resolved(self.enemy_id, player=world.player)#, caching_enabled=True)
 
     class Resolved(Rule.Resolved):
         # noinspection PyDataclass
@@ -181,7 +181,7 @@ class CanFillCompendiumEntry(Rule["EtrianOdysseyWorld"], game=GAME_NAME):
 
     @override
     def _instantiate(self, world: EtrianOdysseyWorld) -> Rule.Resolved:
-        return self.Resolved(self.item_id, player=world.player, caching_enabled=True)
+        return self.Resolved(self.item_id, player=world.player)#, caching_enabled=True)
 
     class Resolved(Rule.Resolved):
         # noinspection PyDataclass
@@ -206,7 +206,7 @@ class CanUseSkill(Rule["EtrianOdysseyWorld"], game=GAME_NAME):
 
     @override
     def _instantiate(self, world: EtrianOdysseyWorld) -> Rule.Resolved:
-        return self.Resolved(self.skill_id, player=world.player, caching_enabled=True)
+        return self.Resolved(self.skill_id, player=world.player)#, caching_enabled=True)
 
     class Resolved(Rule.Resolved):
         # noinspection PyDataclass
@@ -230,7 +230,7 @@ class CanEscape(Rule["EtrianOdysseyWorld"], game=GAME_NAME):
 
     @override
     def _instantiate(self, world: EtrianOdysseyWorld) -> Rule.Resolved:
-        return self.Resolved(player=world.player, caching_enabled=True)
+        return self.Resolved(player=world.player)#, caching_enabled=True)
 
     class Resolved(Rule.Resolved):
         # noinspection PyDataclass

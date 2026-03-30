@@ -24,6 +24,17 @@ class EO1Element(IntEnum):
     FIRE = 4
     ICE = 5
     THUNDER = 6
-    PHYSICAL = 7
-    ELEMENTAL = 8
+    #PHYSICAL = 7
+    #ELEMENTAL = 8 # TODO Remove. This isn't an element, this is a category.
     #ALL = 9
+
+class EO1ElementGroup:
+    PHYSICAL = [EO1Element.SLASH, EO1Element.BASH, EO1Element.STAB]
+    ELEMENTAL = [EO1Element.FIRE, EO1Element.ICE, EO1Element.THUNDER]
+
+class EO1BodyPart(IntEnum):
+    NONE = 0
+    HEAD = 1
+    ARM = 2
+    LEG = 3
+    #ALL = 4

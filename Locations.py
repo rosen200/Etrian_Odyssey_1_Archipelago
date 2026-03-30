@@ -1,7 +1,6 @@
 from __future__ import annotations
 from typing import TYPE_CHECKING
 from BaseClasses import Location, ItemClassification
-from rule_builder.rules import *
 from .Items import EtrianOdysseyItem
 from .Rules import *
 from .data.EnemyData import EO1Enemies
@@ -59,6 +58,11 @@ def create_location_from_compendium_data(compendium_data: CompendiumData) -> Etr
     return location
 
 def location_is_handled_in_game(location_id: int) -> bool:
+    if location_id == -1:
+        return False
+    if location_id not in ALL_LOCATIONS_BY_ID:
+        return False
+
     location = ALL_LOCATIONS_BY_ID[location_id]
     return location.location_type == EtrianOdysseyLocationType.TREASURE_BOX
 
@@ -149,6 +153,7 @@ def create_compendium_locations(world: EtrianOdysseyWorld) -> None:
         create_location(compendium_data)
 
 def create_treasure_locations(world: EtrianOdysseyWorld) -> None:
+    goal = EO1Goal(world.options.goal.value)
     regions: set[str] = {region.name for region in world.get_regions()}
 
     def create_location(treasure_location: TreasureData, region: Region):
@@ -176,6 +181,11 @@ def create_treasure_locations(world: EtrianOdysseyWorld) -> None:
     for treasure_data in ALL_TREASURE_DATA:
         if treasure_data.region not in regions:
             continue
+
+        # Skip chests requiring beyond the goal stratum.
+        if treasure_data.required_stratum is not None:
+            if treasure_data.required_stratum > get_max_stratum_for_goal(goal):
+                continue
 
         region = world.get_region(treasure_data.region)
         create_location(treasure_data, region)
