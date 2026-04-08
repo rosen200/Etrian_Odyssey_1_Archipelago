@@ -52,6 +52,7 @@ class ItemGroupNames:
     QUEST_ITEM = "Quest Item"
     # Consider splitting this into different groups.
     EQUIPMENT = "Equipment"
+    EVENT = "Event"
 
 def get_max_floor_for_goal(goal: EO1Goal) -> int:
     if goal == EO1Goal.defeat_fenrir:

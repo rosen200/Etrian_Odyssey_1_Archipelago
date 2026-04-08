@@ -45,8 +45,9 @@ class SimplifiedSingleEnemyBattleProcessor(SingleEnemyBattleProcessor):
         sv_enemy = SIMPLIFIED_ENEMY_VALUES_BY_ID[enemy_id]
 
         # If player has more than double the level, bypass other checks.
-        if enemy_data.level * 2 < logic_data.current_level_cap:
-            return True
+        # Don't. This has an extremely negative impact on the logic.
+        #if enemy_data.level * 2 < logic_data.current_level_cap:
+        #    return True
 
         if sv_enemy.defeat_criteria is None:
             return True

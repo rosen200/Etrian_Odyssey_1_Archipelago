@@ -1,7 +1,7 @@
 from __future__ import annotations
 from typing import TYPE_CHECKING
 from BaseClasses import Location, ItemClassification
-from .Items import EtrianOdysseyItem
+from .Items import EtrianOdysseyItem, EtrianOdysseyItemType
 from .Rules import *
 from .data.EnemyData import EO1Enemies
 from .data.RegionData import EO1Regions, ALL_REGIONS
@@ -243,6 +243,7 @@ def create_goal_event(world: EtrianOdysseyWorld) -> None:
         region = world.get_region(region_name)
         event_location = EtrianOdysseyLocation(world.player, event_info.name, None, region)
         event_item = EtrianOdysseyItem(event_info.item_name, ItemClassification.progression, None, world.player)
+        event_item.item_type = EtrianOdysseyItemType.EVENT
         event_location.place_locked_item(event_item)
         region.locations.append(event_location)
         world.set_completion_rule(Has(event_item.name))
@@ -282,6 +283,7 @@ def create_events(world: EtrianOdysseyWorld) -> None:
         region = world.get_region(region_name)
         event_location = EtrianOdysseyLocation(world.player, event_info.name, None, region)
         event_item = EtrianOdysseyItem(event_info.item_name, ItemClassification.progression, None, world.player)
+        event_item.item_type = EtrianOdysseyItemType.EVENT
         event_location.place_locked_item(event_item)
         region.locations.append(event_location)
         world.set_rule(event_location, access_rule)
@@ -305,7 +307,7 @@ def create_events(world: EtrianOdysseyWorld) -> None:
     create_event(EVENT_MISSION_7_COMPLETED, EO1Regions.B20F_MAIN, get_mission_access_rule(world, MISSION_7_DATA.mission_id))
 
     # Elevator Activated
-    create_event(EVENT_ELEVATOR_ACTIVATED, EO1Regions.B21F_SOUTH, True_())
+    create_event(EVENT_ELEVATOR_ACTIVATED, EO1Regions.B21F_SOUTH_WEST, True_())
 
     # Card Key
     create_event(EVENT_CARD_KEY_OBTAINED, EO1Regions.B21F_MAIN, True_()) # todo check for the fight logic

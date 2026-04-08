@@ -8,6 +8,7 @@ from ..LogicData import SingleClassLogicData, AllLogicData, SkillLogicData
 from ...data.Generic import *
 
 from ..SkillHelper import *
+import itertools
 
 from .SimplifiedClassValues import *
 from .SimplifiedEnemyValues import *
@@ -154,63 +155,65 @@ class ClassSVCriteria(SVCriteria):
 
         return True
 
+
 @dataclass
 class PlayerParty:
-    front_row: set[str]
-    back_row: set[str]
+    members: list[str]
 
-    def is_valid_party(self) -> bool:
-        if len(self.front_row) > 3:
+    def is_valid_party(self, front_row_class: set[str], back_row_class: set[str]) -> bool:
+        front_count = 0
+        back_count = 0
+        total_count = 0
+
+        for member in self.members:
+            if member in front_row_class:
+                front_count += 1
+            elif member in back_row_class:
+                back_count += 1
+            total_count += 1
+
+        if front_count > 3:
             return False
-        if len(self.back_row) > 3:
+        if back_count > 3:
             return False
-        if len(self.front_row) + len(self.back_row) > 5:
+        if total_count > 5:
             return False
         return True
 
     def clone(self) -> PlayerParty:
-        party = PlayerParty(set(), set())
-        party.front_row = self.front_row.copy()
-        party.back_row = self.back_row.copy()
+        party = PlayerParty([])
+        party.members = self.members.copy()
         return party
 
-    def all_members(self) -> set[str]:
-        return self.front_row.union(self.back_row)
+    def members_as_set(self) -> set[str]:
+        return set(self.members)
+
 
 @dataclass
 class AdventurerMatch:
     match_count: int
     criteria: SVCriteria = field(default_factory=TrueSVCriteria)
 
+
 @dataclass
 class PartySVCriteria(SVCriteria):
     valid_class_criteria: SVCriteria = field(default_factory=TrueSVCriteria)
     extra_criteria: list[AdventurerMatch] = field(default_factory=list)
 
-    def build_possible_parties(self, party: PlayerParty, requirement_class: list[str], requirement_count: int,
-                               front_row_class: set[str], back_row_class: set[str]) -> list[PlayerParty]:
-        def is_front_line(name: str) -> bool:
-            return name in front_row_class
+    @staticmethod
+    def build_possible_party(eligible_class: list[str], front_row_class: set[str], back_row_class: set[str], allow_repeats: bool):
+        if allow_repeats:
+            iter_generator = itertools.combinations_with_replacement(eligible_class, 5)
+        else:
+            iter_generator = itertools.combinations(eligible_class, 5)
 
-        player_parties: list[PlayerParty] = []
+        for party_members in iter_generator:
+            party = PlayerParty([])
+            for member in party_members:
+                party.members.append(member)
 
-        for index in range(len(requirement_class)):
-            class_name = requirement_class[index]
-            current_party = party.clone()
-            if is_front_line(class_name):
-                if class_name not in current_party.front_row:
-                    current_party.front_row.add(class_name)
-            else:
-                if class_name not in current_party.back_row:
-                    current_party.back_row.add(class_name)
-            if requirement_count > 1:
-                player_parties.extend(
-                    self.build_possible_parties(current_party, requirement_class[index + 1:], requirement_count - 1,
-                                           front_row_class, back_row_class))
-            else:
-                player_parties.append(current_party)
-
-        return [party for party in player_parties if party.is_valid_party()]
+            if party.is_valid_party(front_row_class, back_row_class):
+                yield party
 
     def evaluate_criteria(self, enemy_attributes: EnemyAttributes, class_logic_data: list[SingleClassLogicData], all_logic_data: AllLogicData) -> bool:
         valid_front_line_class: set[str] = set()
@@ -253,15 +256,21 @@ class PartySVCriteria(SVCriteria):
 
             party_requirements.append((matching_classes, sub_criteria.match_count))
 
-        possible_parties = self.build_possible_parties(PlayerParty(set(), set()), list(valid_class_by_name.keys()), 5, valid_front_line_class, valid_back_line_class)
+        def match_requirement(requirement: tuple[set[str], int], party: set[str]) -> bool:
+            return len(party.intersection(requirement[0])) >= requirement[1]
 
-        def match_requirement(requirement: tuple[set[str], int], party: PlayerParty) -> bool:
-            return len(party.all_members().intersection(party_requirement[0])) >= requirement[1]
+        def match_all(possible_party: PlayerParty) -> bool:
+            members = possible_party.members_as_set()
+            for party_requirement in party_requirements:
+                if not match_requirement(party_requirement, members):
+                    return False
+            return True
 
-        for party_requirement in party_requirements:
-            possible_parties = [party for party in possible_parties if match_requirement(party_requirement, party)]
+        for current_party in self.build_possible_party(list(valid_class_by_name.keys()), valid_front_line_class, valid_back_line_class, allow_repeats=False):
+            if match_all(current_party):
+                return True
 
-        return len(possible_parties) >= 1
+        return False
 
 @dataclass
 class HasAntiStatusSVCriteria(SVCriteria):
@@ -345,12 +354,16 @@ class SkillCountCriteriaBase(IndividualClassCriteriaBase):
         if not class_data.class_unlocked:
             return False
 
-        match_count = 0
+        simplified_class_data = SIMPLIFIED_CLASS_VALUES_BY_NAME[class_data.class_name]
+        matching_skills: set[int] = set()
         for skill_logic_data in class_data.usable_skills:
             if self.evaluate_single_skill(skill_logic_data, enemy_attributes, class_data, all_logic_data):
-                match_count += 1
+                if skill_logic_data.skill_id in simplified_class_data.non_cumulative_logic_skills:
+                    if len(matching_skills.intersection(simplified_class_data.non_cumulative_logic_skills)) > 0:
+                        continue
+                matching_skills.add(skill_logic_data.skill_id)
 
-        return match_count >= self.skill_count
+        return len(matching_skills) >= self.skill_count
 
     @abstractmethod
     def evaluate_single_skill(self, skill: SkillLogicData, enemy_attributes: EnemyAttributes, class_data: SingleClassLogicData, all_logic_data: AllLogicData) -> bool:
@@ -528,4 +541,55 @@ class CanUseAOEHealSkill(CanUseActiveSkill):
             if buff_skill.effect_type == SkillEffectType.HP_RECOVERY:
                 return True
             return False
+        return False
+
+class HasDefensivePassive(SkillCountCriteriaBase):
+    @staticmethod
+    def get_as_passive_stat_skill_values(skill_values: SimplifiedSkillValues) -> PassiveStatSkillValues:
+        return cast(PassiveStatSkillValues, skill_values)
+
+    def evaluate_single_skill(self, skill: SkillLogicData, enemy_attributes: EnemyAttributes,
+                              class_data: SingleClassLogicData, all_logic_data: AllLogicData) -> bool:
+        if not skill.skill_usable:
+            return False
+
+        simplified_values = self.get_simplified_values(skill)
+        if simplified_values.get_skill_type() != SkillType.PASSIVE_STAT:
+            return False
+
+        passive_skill_values = self.get_as_passive_stat_skill_values(simplified_values)
+
+        if passive_skill_values.parameter == SkillPassiveParamType.HP:
+            return True
+        elif passive_skill_values.parameter == SkillPassiveParamType.DEF:
+            return True
+        return False
+
+class HasOffensivePassive(SkillCountCriteriaBase):
+    @staticmethod
+    def get_as_passive_stat_skill_values(skill_values: SimplifiedSkillValues) -> PassiveStatSkillValues:
+        return cast(PassiveStatSkillValues, skill_values)
+
+    def evaluate_single_skill(self, skill: SkillLogicData, enemy_attributes: EnemyAttributes,
+                              class_data: SingleClassLogicData, all_logic_data: AllLogicData) -> bool:
+        if not skill.skill_usable:
+            return False
+
+        simplified_values = self.get_simplified_values(skill)
+        if simplified_values.get_skill_type() != SkillType.PASSIVE_STAT:
+            if simplified_values.get_skill_type() != SkillType.MASTERY:
+                return False
+
+            mastery_skill_values = cast(MasterySkillValues, simplified_values)
+
+            if mastery_skill_values.effect_type == MasteryEffectType.WEAPON:
+                return True
+            return False
+
+        passive_skill_values = self.get_as_passive_stat_skill_values(simplified_values)
+
+        if passive_skill_values.parameter == SkillPassiveParamType.ATK:
+            return True
+        elif passive_skill_values.parameter == SkillPassiveParamType.DEF:
+            return True
         return False

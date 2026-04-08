@@ -94,7 +94,7 @@ class LogicManager:
 
     def collect(self, state: CollectionState, item: EtrianOdysseyItem) -> None:
         if not hasattr(item, "item_type"):
-            return
+            raise Exception(f"Expected an item_type to be defined for {item.name}")
 
         # Don't restrict to max value, so we support remove properly too.
         if item.item_type == EtrianOdysseyItemType.PROGRESSIVE_LEVEL_CAP:
@@ -111,6 +111,9 @@ class LogicManager:
                 self.logic_data.set_location_stale()
         elif item.item_type == EtrianOdysseyItemType.SKILL:
             self.logic_data.set_skill_stale() # Don't automatically set battle as stale, it will be done if there is a change.
+            self.logic_data.set_battle_stale()
+        elif item.item_type == EtrianOdysseyItemType.EVENT:
+            self.logic_data.set_location_stale()
 
         #floor_ = 1
         #for floor_limit in ALL_PROGRESSIVE_FLOOR_LIMIT:
@@ -122,7 +125,7 @@ class LogicManager:
 
     def remove(self, state: CollectionState, item: EtrianOdysseyItem) -> None:
         if not hasattr(item, "item_type"):
-            return
+            raise Exception(f"Expected an item_type to be defined for {item.name}")
 
         if item.item_type == EtrianOdysseyItemType.PROGRESSIVE_LEVEL_CAP:
             self.logic_data.current_level_cap -= ALL_PROGRESSIVE_LEVEL_CAP_BY_ITEM_ID[item.code].level_amount
@@ -171,6 +174,8 @@ class LogicManager:
         elif item.item_type == EtrianOdysseyItemType.SKILL:
             recalculate_skill()
             recalculate_battle()
+            recalculate_location()
+        elif item.item_type == EtrianOdysseyItemType.EVENT:
             recalculate_location()
 
     def get_current_floor_limit(self) -> int:

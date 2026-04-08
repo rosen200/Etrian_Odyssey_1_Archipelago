@@ -70,7 +70,7 @@ GATHERING_SPOT_DATA: list[EO1GatheringSpotData] = [
     EO1GatheringSpotData(42, EO1GatherType.MINE, 19, 10, EO1MaterialID.CRAB_LEG, EO1MaterialID.ROCK_CORAL, EO1MaterialID.CORUNDUM, 50, 25, 15, EO1Regions.B11F_MAIN), # X Coord:1, Y Coord:14
     EO1GatheringSpotData(43, EO1GatherType.MINE, 20, 15, EO1MaterialID.HARD_SHARD, EO1MaterialID.STEEL_CHIP, EO1MaterialID.CULLINAN, 50, 25, 20, EO1Regions.B16F_SECRET_AREA), # X Coord:4, Y Coord:11
     EO1GatheringSpotData(44, EO1GatherType.MINE, 21, 17, EO1MaterialID.STEEL_CHIP, EO1MaterialID.HARD_SHARD, EO1MaterialID.CULLINAN, 50, 25, 15, EO1Regions.B18F_MAIN), # X Coord:12, Y Coord:16
-    EO1GatheringSpotData(45, EO1GatherType.MINE, 22, 21, EO1MaterialID.DRYWALL, EO1MaterialID.CRYSTWALL, EO1MaterialID.SHINY_SEED, 50, 25, 20, EO1Regions.B22F_SOUTH), # X Coord:12, Y Coord:14
+    EO1GatheringSpotData(45, EO1GatherType.MINE, 22, 21, EO1MaterialID.DRYWALL, EO1MaterialID.CRYSTWALL, EO1MaterialID.SHINY_SEED, 50, 25, 20, EO1Regions.B22F_SOUTH_AREA_WEST), # TODO maybe need to defeat Desouler? # X Coord:12, Y Coord:14
     EO1GatheringSpotData(46, EO1GatherType.MINE, 23, 22, EO1MaterialID.DRYWALL, EO1MaterialID.CRYSTWALL, EO1MaterialID.SHINY_SEED, 50, 25, 15, EO1Regions.B23F_MAIN), #TODO Maybe need to escape # X Coord:27, Y Coord:17
     EO1GatheringSpotData(47, EO1GatherType.MINE, 24, 23, EO1MaterialID.DRYWALL, EO1MaterialID.CRYSTWALL, EO1MaterialID.SHINY_SEED, 50, 25, 20, EO1Regions.B24F_MAIN), #TODO Probably need defeating Dinolich # X Coord:12, Y Coord:25
     EO1GatheringSpotData(48, EO1GatherType.MINE, 25, 25, EO1MaterialID.SHINY_SEED, EO1MaterialID.NARCISSUS, EO1MaterialID.TRI_COLOR, 50, 25, 25, EO1Regions.B26F_MAIN), # X Coord:31, Y Coord:19
@@ -82,7 +82,7 @@ GATHERING_SPOT_DATA: list[EO1GatheringSpotData] = [
     EO1GatheringSpotData(54, EO1GatherType.TAKE, 5, 12, EO1MaterialID.GLASS_EYE, EO1MaterialID.ANT_HONEY, EO1MaterialID.STAB_SHELL, 50, 25, 15, EO1Regions.B13F_NORTH), # X Coord:33, Y Coord:5
     EO1GatheringSpotData(55, EO1GatherType.TAKE, 6, 17, EO1MaterialID.CROSS_SEED, EO1MaterialID.SAND_CLOTH, EO1MaterialID.CORDYCEPS, 50, 25, 15, EO1Regions.B18F_MAIN), # X Coord:31, Y Coord:3
     EO1GatheringSpotData(56, EO1GatherType.TAKE, 7, 19, EO1MaterialID.SAND_CLOTH, EO1MaterialID.CROSS_SEED, EO1MaterialID.CORDYCEPS, 50, 25, 15, EO1Regions.B20F_MAIN), # X Coord:29, Y Coord:11
-    EO1GatheringSpotData(57, EO1GatherType.TAKE, 8, 20, EO1MaterialID.ANGEL_WING, EO1MaterialID.LIFE_HONEY, EO1MaterialID.GUM_STRING, 50, 25, 15, EO1Regions.B21F_SOUTH), # X Coord:28, Y Coord:25
+    EO1GatheringSpotData(57, EO1GatherType.TAKE, 8, 20, EO1MaterialID.ANGEL_WING, EO1MaterialID.LIFE_HONEY, EO1MaterialID.GUM_STRING, 50, 25, 15, EO1Regions.B21F_SOUTH_EAST), # X Coord:28, Y Coord:25
     EO1GatheringSpotData(58, EO1GatherType.TAKE, 9, 23, EO1MaterialID.ANGEL_WING, EO1MaterialID.LIFE_HONEY, EO1MaterialID.GUM_STRING, 50, 25, 20, EO1Regions.B24F_NORTH), # X Coord:23, Y Coord:4
     EO1GatheringSpotData(59, EO1GatherType.TAKE, 10, 25, EO1MaterialID.CROSS_SEED, EO1MaterialID.CORDYCEPS, EO1MaterialID.AMBROSIA, 50, 25, 15, EO1Regions.B26F_MAIN), # X Coord:33, Y Coord:5
     EO1GatheringSpotData(60, EO1GatherType.TAKE, 11, 27, EO1MaterialID.CROSS_SEED, EO1MaterialID.AMBROSIA, EO1MaterialID.HEADROOT, 50, 25, 10, EO1Regions.B28F_DEATHPIT), # X Coord:9, Y Coord:20
@@ -93,7 +93,7 @@ GATHERING_SPOT_DATA: list[EO1GatheringSpotData] = [
     EO1GatheringSpotData(65, EO1GatherType.TAKE, 16, 12, EO1MaterialID.ANT_HONEY, EO1MaterialID.GLASS_EYE, EO1MaterialID.STAB_SHELL, 50, 25, 15, EO1Regions.B13F_NORTH), # X Coord:25, Y Coord:3
     EO1GatheringSpotData(66, EO1GatherType.TAKE, 17, 17, EO1MaterialID.SAND_CLOTH, EO1MaterialID.CROSS_SEED, EO1MaterialID.CORDYCEPS, 50, 25, 15, EO1Regions.B18F_MAIN), # X Coord:18, Y Coord:4
     EO1GatheringSpotData(67, EO1GatherType.TAKE, 18, 19, EO1MaterialID.SAND_CLOTH, EO1MaterialID.CROSS_SEED, EO1MaterialID.OLEANDER, 50, 25, 15, EO1Regions.B20F_NORTH_ROOM), # X Coord:14, Y Coord:4
-    EO1GatheringSpotData(68, EO1GatherType.TAKE, 19, 20, EO1MaterialID.LIFE_HONEY, EO1MaterialID.ANGEL_WING, EO1MaterialID.GUM_STRING, 50, 25, 15, EO1Regions.B21F_SOUTH), #TODO Maybe mandatory Kingdile # X Coord:10, Y Coord:25
+    EO1GatheringSpotData(68, EO1GatherType.TAKE, 19, 20, EO1MaterialID.LIFE_HONEY, EO1MaterialID.ANGEL_WING, EO1MaterialID.GUM_STRING, 50, 25, 15, EO1Regions.B21F_SOUTH_WEST), #TODO Maybe mandatory Kingdile # X Coord:10, Y Coord:25
     EO1GatheringSpotData(69, EO1GatherType.TAKE, 20, 22, EO1MaterialID.LIFE_HONEY, EO1MaterialID.ANGEL_WING, EO1MaterialID.GUM_STRING, 50, 25, 15, EO1Regions.B23F_MAIN), #TODO maybe need to escape # X Coord:22, Y Coord:1
     EO1GatheringSpotData(70, EO1GatherType.TAKE, 21, 25, EO1MaterialID.CORDYCEPS, EO1MaterialID.CROSS_SEED, EO1MaterialID.AMBROSIA, 50, 25, 15, EO1Regions.B26F_MAIN), # X Coord:20, Y Coord:26
     EO1GatheringSpotData(71, EO1GatherType.TAKE, 22, 27, EO1MaterialID.CROSS_SEED, EO1MaterialID.CORDYCEPS, EO1MaterialID.AMBROSIA, 50, 25, 15, EO1Regions.B28F_DEATHPIT), # X Coord:31, Y Coord:28

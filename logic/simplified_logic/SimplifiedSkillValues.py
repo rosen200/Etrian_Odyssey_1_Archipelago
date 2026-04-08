@@ -109,6 +109,8 @@ class DamageSkillValues(ActiveSkillValues):
 
 @dataclass
 class PassiveStatSkillValues(PassiveSkillValues):
+    parameter: SkillPassiveParamType
+
     def get_skill_type(self) -> SkillType:
         return SkillType.PASSIVE_STAT
 
@@ -121,7 +123,10 @@ class AttackSkillValues(DamageSkillValues):
     def get_skill_type(self) -> SkillType:
         return SkillType.ATTACK
 
+@dataclass
 class MasterySkillValues(PassiveSkillValues):
+    effect_type: MasteryEffectType
+
     def get_skill_type(self) -> SkillType:
         return SkillType.MASTERY
 
@@ -250,12 +255,12 @@ class CurseSkillValues(ActiveSkillValues):
 
 SIMPLIFIED_SKILL_VALUES: list[SimplifiedSkillValues] = [
     # Landsknecht
-    PassiveStatSkillValues(EO1Skills.LANDSKNECHT_HP_UP),
-    PassiveStatSkillValues(EO1Skills.LANDSKNECHT_TP_UP),
-    PassiveStatSkillValues(EO1Skills.LANDSKNECHT_ATK_UP),
-    PassiveStatSkillValues(EO1Skills.LANDSKNECHT_DEF_UP),
-    MasterySkillValues(EO1Skills.LANDSKNECHT_AXES),
-    MasterySkillValues(EO1Skills.LANDSKNECHT_SWORDS),
+    PassiveStatSkillValues(EO1Skills.LANDSKNECHT_HP_UP, SkillPassiveParamType.HP),
+    PassiveStatSkillValues(EO1Skills.LANDSKNECHT_TP_UP, SkillPassiveParamType.TP),
+    PassiveStatSkillValues(EO1Skills.LANDSKNECHT_ATK_UP, SkillPassiveParamType.ATK),
+    PassiveStatSkillValues(EO1Skills.LANDSKNECHT_DEF_UP, SkillPassiveParamType.DEF),
+    MasterySkillValues(EO1Skills.LANDSKNECHT_AXES, MasteryEffectType.WEAPON),
+    MasterySkillValues(EO1Skills.LANDSKNECHT_SWORDS, MasteryEffectType.WEAPON),
     NormalAttackPassiveSkillValues(EO1Skills.LANDSKNECHT_2_HIT),
     NonBattleSkillValues(EO1Skills.LANDSKNECHT_MINE),
     BuffSkillValues(EO1Skills.LANDSKNECHT_WAR_CRY, SkillViabilityLevel.NORMAL, effect_type=SkillEffectType.ATTACK, target_type=SkillTargetType.SELF),
@@ -273,10 +278,10 @@ SIMPLIFIED_SKILL_VALUES: list[SimplifiedSkillValues] = [
     EscapeSkillValues(EO1Skills.LANDSKNECHT_FLEE, SkillViabilityLevel.SITUATIONAL, situational_cause=SituationalSkillCause.ESCAPE),
 
     # Survivalist
-    PassiveStatSkillValues(EO1Skills.SURVIVALIST_HP_UP),
-    PassiveStatSkillValues(EO1Skills.SURVIVALIST_TP_UP),
-    PassiveStatSkillValues(EO1Skills.SURVIVALIST_AGI_UP),
-    MasterySkillValues(EO1Skills.SURVIVALIST_BOWS),
+    PassiveStatSkillValues(EO1Skills.SURVIVALIST_HP_UP, SkillPassiveParamType.HP),
+    PassiveStatSkillValues(EO1Skills.SURVIVALIST_TP_UP, SkillPassiveParamType.TP),
+    PassiveStatSkillValues(EO1Skills.SURVIVALIST_AGI_UP, SkillPassiveParamType.AGI),
+    MasterySkillValues(EO1Skills.SURVIVALIST_BOWS, MasteryEffectType.WEAPON),
     TurnManipulationPassiveSkillValues(EO1Skills.SURVIVALIST_1ST_HIT),
     BattleStartPassiveSkillValues(EO1Skills.SURVIVALIST_AMBUSH),
     NonBattleSkillValues(EO1Skills.SURVIVALIST_CHOP),
@@ -297,10 +302,10 @@ SIMPLIFIED_SKILL_VALUES: list[SimplifiedSkillValues] = [
     NonBattleSkillValues(EO1Skills.SURVIVALIST_OWL_EYE),
 
     # Protector
-    PassiveStatSkillValues(EO1Skills.PROTECTOR_HP_UP),
-    PassiveStatSkillValues(EO1Skills.PROTECTOR_TP_UP),
-    PassiveStatSkillValues(EO1Skills.PROTECTOR_DEF_UP),
-    MasterySkillValues(EO1Skills.PROTECTOR_SHIELDS),
+    PassiveStatSkillValues(EO1Skills.PROTECTOR_HP_UP, SkillPassiveParamType.HP),
+    PassiveStatSkillValues(EO1Skills.PROTECTOR_TP_UP, SkillPassiveParamType.TP),
+    PassiveStatSkillValues(EO1Skills.PROTECTOR_DEF_UP, SkillPassiveParamType.DEF),
+    MasterySkillValues(EO1Skills.PROTECTOR_SHIELDS, MasteryEffectType.OTHER),
     PassiveBoostValues(EO1Skills.PROTECTOR_AEGIS),
     PassiveBoostValues(EO1Skills.PROTECTOR_EN_GARDE),
     NonBattleSkillValues(EO1Skills.PROTECTOR_MINE),
@@ -320,12 +325,12 @@ SIMPLIFIED_SKILL_VALUES: list[SimplifiedSkillValues] = [
     NonBattleSkillValues(EO1Skills.PROTECTOR_STALKER),
 
     # Dark Hunter
-    PassiveStatSkillValues(EO1Skills.DARK_HUNTER_HP_UP),
-    PassiveStatSkillValues(EO1Skills.DARK_HUNTER_TP_UP),
-    PassiveStatSkillValues(EO1Skills.DARK_HUNTER_ATK_UP),
-    MasterySkillValues(EO1Skills.DARK_HUNTER_WHIPS),
-    MasterySkillValues(EO1Skills.DARK_HUNTER_SWORDS),
-    PassiveBoostValues(EO1Skills.DARK_HUNTER_BOOST_UP),
+    PassiveStatSkillValues(EO1Skills.DARK_HUNTER_HP_UP, SkillPassiveParamType.HP),
+    PassiveStatSkillValues(EO1Skills.DARK_HUNTER_TP_UP, SkillPassiveParamType.TP),
+    PassiveStatSkillValues(EO1Skills.DARK_HUNTER_ATK_UP, SkillPassiveParamType.ATK),
+    MasterySkillValues(EO1Skills.DARK_HUNTER_WHIPS, MasteryEffectType.WEAPON),
+    MasterySkillValues(EO1Skills.DARK_HUNTER_SWORDS, MasteryEffectType.WEAPON),
+    PassiveBoostValues(EO1Skills.DARK_HUNTER_BOOST_UP),#, SkillPassiveParamType.BOOST),
     PassiveBoostValues(EO1Skills.DARK_HUNTER_FURY),
     NonBattleSkillValues(EO1Skills.DARK_HUNTER_TAKE),
     AggroSkillValues(EO1Skills.DARK_HUNTER_CLOAK, SkillViabilityLevel.TERRIBLE),
@@ -343,10 +348,10 @@ SIMPLIFIED_SKILL_VALUES: list[SimplifiedSkillValues] = [
     AttackSkillValues(EO1Skills.DARK_HUNTER_MIRAGE, SkillViabilityLevel.NORMAL, skill_power=SkillPower.MEDIUM),
 
     # Medic
-    PassiveStatSkillValues(EO1Skills.MEDIC_HP_UP),
-    PassiveStatSkillValues(EO1Skills.MEDIC_TP_UP),
-    PassiveStatSkillValues(EO1Skills.MEDIC_ATK_UP),
-    MasterySkillValues(EO1Skills.MEDIC_HEALER),
+    PassiveStatSkillValues(EO1Skills.MEDIC_HP_UP, SkillPassiveParamType.HP),
+    PassiveStatSkillValues(EO1Skills.MEDIC_TP_UP, SkillPassiveParamType.TP),
+    PassiveStatSkillValues(EO1Skills.MEDIC_ATK_UP, SkillPassiveParamType.ATK),
+    MasterySkillValues(EO1Skills.MEDIC_HEALER, MasteryEffectType.OTHER),
     NonBattleSkillValues(EO1Skills.MEDIC_PATCH_UP),
     NonBattleSkillValues(EO1Skills.MEDIC_SCAVENGE),
     PassiveBoostValues(EO1Skills.MEDIC_TP_REGEN),
@@ -366,11 +371,11 @@ SIMPLIFIED_SKILL_VALUES: list[SimplifiedSkillValues] = [
     NonBattleSkillValues(EO1Skills.MEDIC_H_TOUCH),
 
     # Alchemist
-    PassiveStatSkillValues(EO1Skills.ALCHEMIST_TP_UP),
-    MasterySkillValues(EO1Skills.ALCHEMIST_FIRE_UP),
-    MasterySkillValues(EO1Skills.ALCHEMIST_ICE_UP),
-    MasterySkillValues(EO1Skills.ALCHEMIST_VOLT_UP),
-    MasterySkillValues(EO1Skills.ALCHEMIST_TOXINS),
+    PassiveStatSkillValues(EO1Skills.ALCHEMIST_TP_UP, SkillPassiveParamType.TP),
+    MasterySkillValues(EO1Skills.ALCHEMIST_FIRE_UP, MasteryEffectType.OTHER),
+    MasterySkillValues(EO1Skills.ALCHEMIST_ICE_UP, MasteryEffectType.OTHER),
+    MasterySkillValues(EO1Skills.ALCHEMIST_VOLT_UP, MasteryEffectType.OTHER),
+    MasterySkillValues(EO1Skills.ALCHEMIST_TOXINS, MasteryEffectType.OTHER),
     NonBattleSkillValues(EO1Skills.ALCHEMIST_SCAVENGE),
     PassiveBoostValues(EO1Skills.ALCHEMIST_TP_REGEN),
     NonBattleSkillValues(EO1Skills.ALCHEMIST_CHOP),
@@ -389,9 +394,9 @@ SIMPLIFIED_SKILL_VALUES: list[SimplifiedSkillValues] = [
     NonBattleSkillValues(EO1Skills.ALCHEMIST_WARP),
 
     # Troubadour
-    PassiveStatSkillValues(EO1Skills.TROUBADOUR_HP_UP),
-    PassiveStatSkillValues(EO1Skills.TROUBADOUR_TP_UP),
-    MasterySkillValues(EO1Skills.TROUBADOUR_SONGS),
+    PassiveStatSkillValues(EO1Skills.TROUBADOUR_HP_UP, SkillPassiveParamType.HP),
+    PassiveStatSkillValues(EO1Skills.TROUBADOUR_TP_UP, SkillPassiveParamType.TP),
+    MasterySkillValues(EO1Skills.TROUBADOUR_SONGS, MasteryEffectType.OTHER),
     NonBattleSkillValues(EO1Skills.TROUBADOUR_DIVINITY),
     BuffSkillValues(EO1Skills.TROUBADOUR_BRAVERY, SkillViabilityLevel.GOOD, effect_type=SkillEffectType.ATTACK, target_type=SkillTargetType.ALL),
     BuffSkillValues(EO1Skills.TROUBADOUR_SHELTER, SkillViabilityLevel.NORMAL, effect_type=SkillEffectType.DEFENSE, target_type=SkillTargetType.ALL),
@@ -412,10 +417,10 @@ SIMPLIFIED_SKILL_VALUES: list[SimplifiedSkillValues] = [
     NonBattleSkillValues(EO1Skills.TROUBADOUR_TAKE),
 
     # Ronin
-    PassiveStatSkillValues(EO1Skills.RONIN_HP_UP),
-    PassiveStatSkillValues(EO1Skills.RONIN_TP_UP),
-    PassiveStatSkillValues(EO1Skills.RONIN_ATK_UP),
-    MasterySkillValues(EO1Skills.RONIN_KATANAS),
+    PassiveStatSkillValues(EO1Skills.RONIN_HP_UP, SkillPassiveParamType.HP),
+    PassiveStatSkillValues(EO1Skills.RONIN_TP_UP, SkillPassiveParamType.TP),
+    PassiveStatSkillValues(EO1Skills.RONIN_ATK_UP, SkillPassiveParamType.ATK),
+    MasterySkillValues(EO1Skills.RONIN_KATANAS, MasteryEffectType.WEAPON),
     NormalAttackPassiveSkillValues(EO1Skills.RONIN_CRIT_UP),
     PassiveBoostValues(EO1Skills.RONIN_SIGHT),
     NonBattleSkillValues(EO1Skills.RONIN_MINE),
@@ -435,9 +440,9 @@ SIMPLIFIED_SKILL_VALUES: list[SimplifiedSkillValues] = [
     AttackSkillValues(EO1Skills.RONIN_HYOSETSU, SkillViabilityLevel.NORMAL, skill_power=SkillPower.MEDIUM),
 
     # Hexer
-    PassiveStatSkillValues(EO1Skills.HEXER_HP_UP),
-    PassiveStatSkillValues(EO1Skills.HEXER_TP_UP),
-    MasterySkillValues(EO1Skills.HEXER_CURSES),
+    PassiveStatSkillValues(EO1Skills.HEXER_HP_UP, SkillPassiveParamType.HP),
+    PassiveStatSkillValues(EO1Skills.HEXER_TP_UP, SkillPassiveParamType.TP),
+    MasterySkillValues(EO1Skills.HEXER_CURSES, MasteryEffectType.OTHER),
     BattleStartPassiveSkillValues(EO1Skills.HEXER_STAGGER),
     NonBattleSkillValues(EO1Skills.HEXER_MINE),
     DebuffSkillValues(EO1Skills.HEXER_SAPPING, SkillViabilityLevel.GOOD, effect_type=SkillEffectType.ATTACK, target_type=SkillTargetType.ALL),

@@ -62,6 +62,7 @@ class EtrianOdysseyWorld(World):
     options: EtrianOdysseyOptions
     settings: typing.ClassVar[EtrianOdysseySettings]
     topology_present = True
+    #explicit_indirect_conditions = False
 
     location_name_to_id = ALL_LOCATIONS_ID_BY_NAME
     item_name_to_id = ITEMS_ID_BY_NAME
@@ -83,6 +84,7 @@ class EtrianOdysseyWorld(World):
         **{level_cap_data.name:ItemGroupNames.PROGRESSIVE_LEVEL_CAP for level_cap_data in ALL_PROGRESSIVE_LEVEL_CAP},
         **{floor_limit_data.name:ItemGroupNames.PROGRESSIVE_FLOOR_LIMIT for floor_limit_data in ALL_PROGRESSIVE_FLOOR_LIMIT},
         **{key_item.name:ItemGroupNames.KEY_ITEM for key_item in KEY_ITEM_DATA},
+        **{event:ItemGroupNames.EVENT for event in EVENT_BY_NAME}
     }
 
     origin_region_name = EO1Regions.ETRIA
@@ -164,6 +166,8 @@ class EtrianOdysseyWorld(World):
             output_data["InitialValues"]["level_cap"] = self.initial_level_cap
         if self.options.floor_limit_mode != 0:
             output_data["InitialValues"]["floor_limit"] = self.initial_floor_limit
+
+        output_data["ShopUnlockMaterialCostDivider"] = self.options.shop_unlock_material_cost_divider.value
 
         output_data["InitialValues"]["experience_modifier"] = int(self.options.experience_modifier)
 

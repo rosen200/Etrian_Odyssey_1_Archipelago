@@ -34,3 +34,21 @@ class SkillTargetType(IntEnum):
     SELF = 3
     FRONT_ALL = 4
     BACK_ALL = 5
+
+# This is a somewhat simplified version of EO1SkillValueType
+class SkillPassiveParamType(IntEnum):
+    HP = 1
+    TP = 2
+    ATK = 3
+    AGI = 4
+    DEF = 5
+    ELEM_DEF = 6
+    BOOST = 7
+    CRIT = 8
+    WEAPON_MASTERY = 9
+    MISC_MASTERY = 10
+
+class MasteryEffectType(IntEnum):
+    WEAPON = 1
+    OTHER = 2
+

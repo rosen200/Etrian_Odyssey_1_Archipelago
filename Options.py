@@ -18,7 +18,7 @@ class ExperienceModifier(Range):
     display_name = "Experience Modifier"
     range_start = 50
     range_end = 1000
-    default = 150
+    default = 500
 
 class BattleLogicMode(Choice):
     display_name = "Battle Logic Mode"
@@ -59,7 +59,7 @@ class LevelCapIncreaseValue(Choice):
     option_5 = 5
     option_10 = 10
     option_15 = 15
-    default = 5
+    default = 4
 
 class ExtraProgressiveLevelCapItems(Range):
     display_name = "Extra Progressive Level Cap Items"
@@ -138,6 +138,15 @@ class CodexSanity(DefaultOnToggle):
 class CompendiumSanity(Toggle):
     display_name = "Compendium Sanity"
 
+# QoL options
+class ShopUnlockMaterialCostDivider(Choice):
+    display_name = "Shop Unlock Material Cost Divider"
+    option_vanilla = 1
+    option_half = 2
+    option_quarter = 4
+    option_one_for_all = 50
+    default = 1
+
 # Quest sanity
 # FOEsanity
 # Shopsanity
@@ -168,6 +177,7 @@ class EtrianOdysseyOptions(PerGameCommonOptions):
     starting_skill_count: StartingSkillCount
     codex_sanity: CodexSanity
     compendium_sanity: CompendiumSanity
+    shop_unlock_material_cost_divider: ShopUnlockMaterialCostDivider
 
     def get_effective_initial_level_cap(self) -> int:
         if self.level_cap_mode.value != LevelCapMode.option_none:

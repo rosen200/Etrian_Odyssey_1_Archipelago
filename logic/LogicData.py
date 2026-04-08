@@ -43,6 +43,7 @@ class DualIntSetLogicData(LogicData):
     def copy_data(self, new_copy: DualIntSetLogicData) -> None:
         new_copy.unaccessible = self.unaccessible.copy()
         new_copy.accessible = self.accessible.copy()
+        new_copy.stale = self.stale
 
     @abstractmethod
     def fill_default(self) -> None:
@@ -181,6 +182,7 @@ class SkillLogicData(LogicData):
         new_copy.skill_usable = self.skill_usable
         new_copy.required_skills = self.required_skills.copy()
         new_copy.required_level = self.required_level
+        new_copy.stale = self.stale
 
         return new_copy
 
@@ -197,6 +199,7 @@ class SingleClassLogicData(LogicData):
         for skill_entry in self.class_skills.values():
             new_entry = skill_entry.copy()
             new_copy.class_skills[new_entry.skill_id] = new_entry
+        new_copy.stale = self.stale
         return new_copy
 
     @property
@@ -226,6 +229,7 @@ class ClassLogicData(LogicData):
         new_copy.troubadour = self.troubadour.copy()
         new_copy.ronin = self.ronin.copy()
         new_copy.hexer = self.hexer.copy()
+        new_copy.stale = self.stale
         return new_copy
 
     @property

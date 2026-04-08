@@ -59,7 +59,7 @@ ALL_TREASURE_DATA: list[TreasureData] = [
     TreasureData(4, 3, "B3 West", TreasureContentType.Item, 1006, EO1Regions.B4F_MAIN, 1023),  # B4F At [11,9], 0x03EE - Plate
     TreasureData(4, 4, "E4", TreasureContentType.Item, 4308, EO1Regions.B4F_SECRET_AREA, 1024),  # B4F At [19,20], 0x10D4 - Stonard II
     TreasureData(4, 5, "F2", TreasureContentType.Item, 4305, EO1Regions.B4F_MAIN, 1025, TreasureLogicRequirement([EO1Enemies.WOLF], require_escape=True)),  # B4F At [7,28], 0x10D1 - Bravant
-    TreasureData(5, 0, "B7", TreasureContentType.Item, 4284, EO1Regions.B5F_MAIN, 1026),  # B5F At [32,9], 0x10BC - Amrita
+    TreasureData(5, 0, "B7", TreasureContentType.Item, 4284, EO1Regions.B5F_SECRET_AREA, 1026),  # B5F At [32,9], 0x10BC - Amrita
     TreasureData(5, 1, "C7", TreasureContentType.Item, 5, EO1Regions.B5F_MAIN, 1027),  # B5F At [30,10], 0x0005 - Boar Spear
     TreasureData(5, 2, "E1 West", TreasureContentType.Item, 4291, EO1Regions.B5F_SECRET_AREA, 1028),  # B5F At [3,21], 0x10C3 - Nectar II
     TreasureData(5, 3, "E1 East", TreasureContentType.Item, 4306, EO1Regions.B5F_SECRET_AREA, 1029),  # B5F At [4,21], 0x10D2 - Bravant II
@@ -127,7 +127,7 @@ ALL_TREASURE_DATA: list[TreasureData] = [
     TreasureData(16, 3, "D1 East", TreasureContentType.Item, 2062, EO1Regions.B16F_SECRET_AREA, 1091),  # B16F At [2,15], 0x080E - Fairy Boot
     TreasureData(16, 4, "D5", TreasureContentType.Item, 1030, EO1Regions.B16F_MAIN, 1092),  # B16F At [20,18], 0x0406 - Brigandine
     TreasureData(16, 5, "E2", TreasureContentType.Item, 4288, EO1Regions.B16F_SECRET_AREA, 1093),  # B16F At [6,23], 0x10C0 - Soma
-    TreasureData(17, 0, "", TreasureContentType.Item, 4289, EO1Regions.B17F_SECRET_AREA, 1094),  # B17F At [5,2], 0x10C1 - Somaprime
+    TreasureData(17, 0, "", TreasureContentType.Item, 4289, EO1Regions.B17F_SECRET_AREA_NORTH, 1094, TreasureLogicRequirement([EO1Enemies.KINGDILE])),  # B17F At [5,2], 0x10C1 - Somaprime
     TreasureData(17, 1, "C2", TreasureContentType.Item, 4285, EO1Regions.B17F_MAIN, 1095),  # B17F At [7,10], 0x10BD - Amrita II
     TreasureData(17, 2, "D5", TreasureContentType.Item, 2008, EO1Regions.B17F_MAIN, 1096),  # B17F At [24,18], 0x07D8 - Sandy Pin
     TreasureData(18, 0, "", TreasureContentType.Item, 4302, EO1Regions.B18F_WEST, 1097),  # B18F At [1,21], 0x10CE - Axcela II
@@ -138,11 +138,11 @@ ALL_TREASURE_DATA: list[TreasureData] = [
     TreasureData(20, 2, "South", TreasureContentType.Item, 98, EO1Regions.B20F_VIOLET_CRYSTAL_ROOM, 1102),  # B20F At [1,13], 0x0062 - Vine Bow
     TreasureData(20, 3, "C6", TreasureContentType.Item, 4285, EO1Regions.B20F_MAIN, 1103),  # B20F At [29,13], 0x10BD - Amrita II
     TreasureData(21, 0, "A5", TreasureContentType.Item, 2065, EO1Regions.B21F_EAST, 1104),  # B21F At [24,4], 0x0811 - Fur Boot
-    TreasureData(21, 1, "F5", TreasureContentType.Item, 4332, EO1Regions.B21F_SOUTH, 1105),  # B21F At [24,25], 0x10EC - Magnet
+    TreasureData(21, 1, "F5", TreasureContentType.Item, 4332, EO1Regions.B21F_SOUTH_EAST, 1105),  # B21F At [24,25], 0x10EC - Magnet
     TreasureData(22, 0, "A6", TreasureContentType.Item, 16, EO1Regions.B22F_MAIN, 1106),  # B22F At [27,3], 0x0010 - Pattisa
     TreasureData(22, 1, "North", TreasureContentType.Item, 4291, EO1Regions.B22F_WEST_ELEVATOR, 1107),  # B22F At [5,8], 0x10C3 - Nectar II
     TreasureData(22, 2, "South", TreasureContentType.Money, 3000, EO1Regions.B22F_WEST_ELEVATOR, 1108),  # B22F At [3,17], 3000en
-    TreasureData(22, 3, "E5", TreasureContentType.Item, 4285, EO1Regions.B22F_SOUTH, 1109),  # B22F At [22,20], 0x10BD - Amrita II
+    TreasureData(22, 3, "E5", TreasureContentType.Item, 4285, EO1Regions.B22F_SOUTH_AREA_EAST, 1109),  # B22F At [22,20], 0x10BD - Amrita II
     TreasureData(23, 0, "A4", TreasureContentType.Item, 4291, EO1Regions.B23F_MAIN, 1110),  # B23F At [17,4], 0x10C3 - Nectar II
     TreasureData(23, 1, "D2 North", TreasureContentType.Item, 1039, EO1Regions.B23F_SOUTH_WEST, 1111),  # B23F At [8,17], 0x040F - Composite
     TreasureData(23, 2, "D2 South", TreasureContentType.Item, 4282, EO1Regions.B23F_SOUTH_WEST, 1112),  # B23F At [8,18], 0x10BA - Medica IV

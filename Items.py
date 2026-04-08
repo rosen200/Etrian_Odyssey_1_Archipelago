@@ -27,6 +27,7 @@ if TYPE_CHECKING:
 # Items use id 1001 to 2243
 
 class EtrianOdysseyItemType(Enum):
+    EVENT = -1
     INVENTORY = 0
     MONEY = 1
     PROGRESSIVE_FLOOR_LIMIT = 2
@@ -100,7 +101,9 @@ def get_random_filler_item_name(world: EtrianOdysseyWorld) -> str:
 def create_item_from_name(world: EtrianOdysseyWorld, name: str) -> EtrianOdysseyItem:
     item_id = ITEMS_ID_BY_NAME[name]
     item_base = ALL_ITEMS_BY_ID[item_id]
-    return EtrianOdysseyItem(item_base.name, item_base.classification, item_base.code, world.player)
+    item = EtrianOdysseyItem(item_base.name, item_base.classification, item_base.code, world.player)
+    item.item_type = item_base.item_type
+    return item
 
 def randomly_pick_progressive_items(world: EtrianOdysseyWorld, total_value: int, extra_count: int, values: list[tuple[int, int]]) -> list[int]:
     def filter_list(max_value: int, values_to_filter: list[tuple[int, int]]) -> list[tuple[int, int]]:

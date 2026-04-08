@@ -59,8 +59,9 @@ def get_battle_item_dependencies() -> list[str]:
 def get_location_item_dependencies() -> list[str]:
     return [
         ItemGroupNames.PROGRESSIVE_FLOOR_LIMIT,
-        ItemGroupNames.KEY_ITEM
+        ItemGroupNames.KEY_ITEM,
         # TODO add Quest items
+        ItemGroupNames.EVENT # Events mostly lock regions.
     ]
 
 @dataclasses.dataclass()

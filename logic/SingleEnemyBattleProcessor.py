@@ -7,6 +7,20 @@ from BaseClasses import CollectionState
 
 from ..data.EnemyData import *
 
+from enum import Enum
+class DefeatCondition(Enum):
+    STAB = "STAB"
+    NOT_STAB = "NOT_STAB"
+    FIRE = "FIRE"
+    NOT_FIRE = "NOT_FIRE"
+    ICE = "ICE"
+    NOT_ICE = "NOT_ICE"
+    BASH = "BASH"
+    NOT_BASH = "NOT_BASH"
+    PHYSICAL = "PHYSICAL"
+    NOT_PHYSICAL = "NOT_PHYSICAL"
+
+
 class SingleEnemyBattleProcessor(ABC):
     def get_enemy_data(self, enemy_id: int) -> EnemyData:
         return ENEMY_BY_ID[enemy_id]
@@ -18,6 +32,10 @@ class SingleEnemyBattleProcessor(ABC):
     @abstractmethod
     def can_survive_enemy(self, enemy_id: int, state: CollectionState, logic_data: AllLogicData) -> bool:
         pass
+
+    #@abstractmethod
+    #def can_defeat_with_condition(self, enemy_id: int, condition: DropCondition, state: CollectionState, logic_data: AllLogicData) -> bool:
+    #    pass
 
 class LevelOnlySingleEnemyBattleProcessor(SingleEnemyBattleProcessor):
     def can_survive_enemy(self, enemy_id: int, state: CollectionState, logic_data: AllLogicData) -> bool:
@@ -40,3 +58,7 @@ class NoLogicSingleEnemyBattleProcessor(SingleEnemyBattleProcessor):
 
     def can_defeat_enemy(self, enemy_id: int, state: CollectionState, logic_data: AllLogicData) -> bool:
         return True
+
+    #def can_defeat_with_condition(self, enemy_id: int, condition: DropCondition, state: CollectionState, logic_data: AllLogicData) -> bool:
+
+

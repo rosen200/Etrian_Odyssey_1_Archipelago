@@ -85,7 +85,14 @@ SIMPLIFIED_ENEMY_VALUES_TABLE: list[SimplifiedEnemyValues] = [
                                           criteria=CanUseActiveSkill(
                                               skill_viability_level=SkillViabilityLevel.NORMAL
                                           )), # At least one front and back row class with something decent.
-                          survive_criteria=ClassSVCriteria(front_class_count=1),
+                          survive_criteria=ClassSVCriteria(front_class_count=1,
+                                                           criteria=OrSVCriteria([
+                                                               CanUseActiveSkill(
+                                                                   skill_viability_level=SkillViabilityLevel.NORMAL
+                                                               ),
+                                                               HasDefensivePassive(),
+                                                               HasOffensivePassive()
+                                                           ])),
                           attributes=EnemyAttributes(
                               damage_type_weakness=[EO1Element.FIRE],
                               damage_type_resistance=[EO1Element.ICE, EO1Element.THUNDER],
@@ -97,7 +104,14 @@ SIMPLIFIED_ENEMY_VALUES_TABLE: list[SimplifiedEnemyValues] = [
                                           criteria=CanUseActiveSkill(
                                               skill_viability_level=SkillViabilityLevel.NORMAL
                                           )), # At least one front and back row class with something decent.
-                          survive_criteria=ClassSVCriteria(front_class_count=1),
+                          survive_criteria=ClassSVCriteria(front_class_count=1,
+                                                           criteria=OrSVCriteria([
+                                                               CanUseActiveSkill(
+                                                                   skill_viability_level=SkillViabilityLevel.NORMAL
+                                                               ),
+                                                               HasDefensivePassive(),
+                                                               HasOffensivePassive()
+                                                           ])),
                           attributes=EnemyAttributes(
                               damage_type_resistance=[EO1Element.SLASH, EO1Element.STAB, EO1Element.BASH],
                               damage_type_weakness=[EO1Element.ICE, EO1Element.THUNDER],
@@ -117,7 +131,14 @@ SIMPLIFIED_ENEMY_VALUES_TABLE: list[SimplifiedEnemyValues] = [
                                                   skill_viability_level=SkillViabilityLevel.NORMAL
                                               )
                                           ])),
-                          survive_criteria=ClassSVCriteria(front_class_count=1),
+                          survive_criteria=ClassSVCriteria(front_class_count=2,
+                                                           criteria=OrSVCriteria([
+                                                               CanUseActiveSkill(
+                                                                   skill_count=2,
+                                                                   skill_viability_level=SkillViabilityLevel.NORMAL
+                                                               ),
+                                                               HasDefensivePassive()
+                                                           ])),
                           attributes=EnemyAttributes(
                               damage_type_immunity=[EO1Element.FIRE],
                               skills_body_use=[EO1BodyPart.ARM],
@@ -393,6 +414,7 @@ SIMPLIFIED_ENEMY_VALUES_TABLE: list[SimplifiedEnemyValues] = [
     SimplifiedEnemyValues(EO1Enemies.MOA,
                           PartySVCriteria(
                               valid_class_criteria=CanUseActiveSkill(
+                                  skill_count=2,
                                   skill_viability_level=SkillViabilityLevel.NORMAL
                               ),
                               extra_criteria=[
@@ -413,6 +435,7 @@ SIMPLIFIED_ENEMY_VALUES_TABLE: list[SimplifiedEnemyValues] = [
     SimplifiedEnemyValues(EO1Enemies.CUTTER,
                           PartySVCriteria(
                               valid_class_criteria=CanUseActiveSkill(
+                                  skill_count=2,
                                   skill_viability_level=SkillViabilityLevel.NORMAL
                               ),
                               extra_criteria=[
@@ -434,6 +457,7 @@ SIMPLIFIED_ENEMY_VALUES_TABLE: list[SimplifiedEnemyValues] = [
     SimplifiedEnemyValues(EO1Enemies.ASSASSIN,
                           PartySVCriteria(
                               valid_class_criteria=CanUseActiveSkill(
+                                  skill_count=2,
                                   skill_viability_level=SkillViabilityLevel.NORMAL
                               ),
                           ),
@@ -446,6 +470,7 @@ SIMPLIFIED_ENEMY_VALUES_TABLE: list[SimplifiedEnemyValues] = [
     SimplifiedEnemyValues(EO1Enemies.ARMOTH,
                           PartySVCriteria(
                               valid_class_criteria=CanUseActiveSkill(
+                                  skill_count=2,
                                   skill_viability_level=SkillViabilityLevel.NORMAL
                               ),
                               extra_criteria=[
@@ -616,55 +641,339 @@ SIMPLIFIED_ENEMY_VALUES_TABLE: list[SimplifiedEnemyValues] = [
                               can_inflict_status_effect=True,
                               can_apply_buff=True
                           )), # Can Debuff (ATK)
-    #
-    #    # Stratum 4
-    #    SimplifiedEnemyValues(EO1Enemies.FLAMERAT), # Fire Immunity # Use Head
-    #    SimplifiedEnemyValues(EO1Enemies.GOLDEER), # Use Head Leg
-    #    SimplifiedEnemyValues(EO1Enemies.SOLDIER), # Use Head
-    #    SimplifiedEnemyValues(EO1Enemies.MYSTIC), # Use Head Arm
-    #    SimplifiedEnemyValues(EO1Enemies.MANTIS), # Use Arm
-    #    SimplifiedEnemyValues(EO1Enemies.SABREMAW), # Ice Immunity # Use Head
-    #    SimplifiedEnemyValues(EO1Enemies.PIXIE), # Fire Ice Thunder Immunity # Use Head
-    #    SimplifiedEnemyValues(EO1Enemies.HEXROOT), # Use Head
-    #    SimplifiedEnemyValues(EO1Enemies.WARRIOR), # Use Head Arm
-    #    SimplifiedEnemyValues(EO1Enemies.DRUID), # Use Head
-    #    SimplifiedEnemyValues(EO1Enemies.FAERIE), # Fire Ice Thunder Immunity # Use Head
-    #    SimplifiedEnemyValues(EO1Enemies.REDBEAK), # Fire Immunity
-    #    SimplifiedEnemyValues(EO1Enemies.IMMOA), # Use Leg
-    #
-    #    SimplifiedEnemyValues(EO1Enemies.SICKWOOD), # Use Head
-    #    SimplifiedEnemyValues(EO1Enemies.CRUELLA), # Use Head
-    #    SimplifiedEnemyValues(EO1Enemies.DIABOLIX), # Use Head
-    #    SimplifiedEnemyValues(EO1Enemies.OGRE), # Use Head Arm
-    #    SimplifiedEnemyValues(EO1Enemies.HUNTER), # Use Head
-    #    SimplifiedEnemyValues(EO1Enemies.BUD, TrueSVCriteria()),
-    #
-    #    SimplifiedEnemyValues(EO1Enemies.IWAOPELN), # Use Head Arm Leg
-    #
-    #    # Stratum 5
-    #    SimplifiedEnemyValues(EO1Enemies.DARKHARE), # Use Head
-    #    SimplifiedEnemyValues(EO1Enemies.MAUL), # Use Arm
-    #    SimplifiedEnemyValues(EO1Enemies.BURSTGEL), # Fire Immunity # Use Arm
-    #    SimplifiedEnemyValues(EO1Enemies.DIREWOLF), # Fire Immunity # Use Head
-    #    SimplifiedEnemyValues(EO1Enemies.MUSKOID), # Use Head
-    #    SimplifiedEnemyValues(EO1Enemies.KINGFROG), # Use Head
-    #    SimplifiedEnemyValues(EO1Enemies.KINGAPIS), # Use Leg
-    #    SimplifiedEnemyValues(EO1Enemies.CLAWLORD), # Use Head
-    #    SimplifiedEnemyValues(EO1Enemies.SILKER), # Use Head
-    #    SimplifiedEnemyValues(EO1Enemies.VARAHA), # Use Leg
-    #    SimplifiedEnemyValues(EO1Enemies.ARMOROLL),
-    #    SimplifiedEnemyValues(EO1Enemies.HELLBULL), # Use Leg
-    #    SimplifiedEnemyValues(EO1Enemies.KINGYANA), # Use Arm
-    #
-    #    SimplifiedEnemyValues(EO1Enemies.DESOULER), # Use Head
-    #    SimplifiedEnemyValues(EO1Enemies.KINGDILE), # Use Head
-    #    SimplifiedEnemyValues(EO1Enemies.TREETUSK), # Use Head Leg
-    #    SimplifiedEnemyValues(EO1Enemies.DINOLICH), # Use Head
-    #
-    #    SimplifiedEnemyValues(EO1Enemies.REN), # Ice Immunity # Use Head Arm Leg
-    #    SimplifiedEnemyValues(EO1Enemies.TLACHTGA), # Use Head
-    #    SimplifiedEnemyValues(EO1Enemies.ETREANT), # Use Head Arm Leg
-    #
+
+    # Stratum 4
+    SimplifiedEnemyValues(EO1Enemies.FLAMERAT, TrueSVCriteria(),
+                          attributes=EnemyAttributes(
+                              damage_type_immunity=[EO1Element.FIRE],
+                              skills_body_use=[EO1BodyPart.HEAD]
+                          )), # Fire Immunity # Use Head
+    SimplifiedEnemyValues(EO1Enemies.GOLDEER, TrueSVCriteria(),
+                          attributes=EnemyAttributes(
+                              skills_body_use=[EO1BodyPart.HEAD, EO1BodyPart.LEG],
+                          )), # Use Head Leg
+    SimplifiedEnemyValues(EO1Enemies.SOLDIER, TrueSVCriteria(),
+                          attributes=EnemyAttributes(
+                              skills_body_use=[EO1BodyPart.HEAD]
+                          )), # Use Head
+    SimplifiedEnemyValues(EO1Enemies.MYSTIC, TrueSVCriteria(),
+                          attributes=EnemyAttributes(
+                              skills_body_use=[EO1BodyPart.HEAD, EO1BodyPart.ARM],
+                          )), # Use Head Arm
+    SimplifiedEnemyValues(EO1Enemies.MANTIS, TrueSVCriteria(),
+                          attributes=EnemyAttributes(
+                              skills_body_use=[EO1BodyPart.ARM]
+                          )), # Use Arm
+    SimplifiedEnemyValues(EO1Enemies.SABREMAW, TrueSVCriteria(),
+                          attributes=EnemyAttributes(
+                              damage_type_immunity=[EO1Element.ICE],
+                              skills_body_use=[EO1BodyPart.HEAD]
+                          )), # Ice Immunity # Use Head
+    SimplifiedEnemyValues(EO1Enemies.PIXIE, TrueSVCriteria(),
+                          attributes=EnemyAttributes(
+                              damage_type_immunity=[EO1Element.FIRE, EO1Element.ICE, EO1Element.THUNDER],
+                              skills_body_use=[EO1BodyPart.HEAD]
+                          )), # Fire Ice Thunder Immunity # Use Head
+    SimplifiedEnemyValues(EO1Enemies.HEXROOT, TrueSVCriteria(),
+                          attributes=EnemyAttributes(
+                              skills_body_use=[EO1BodyPart.HEAD]
+                          )), # Use Head
+    SimplifiedEnemyValues(EO1Enemies.WARRIOR, TrueSVCriteria(),
+                          attributes=EnemyAttributes(
+                              skills_body_use=[EO1BodyPart.HEAD, EO1BodyPart.ARM]
+                          )), # Use Head Arm
+    SimplifiedEnemyValues(EO1Enemies.DRUID, TrueSVCriteria(),
+                          attributes=EnemyAttributes(
+                              skills_body_use=[EO1BodyPart.HEAD]
+                          )), # Use Head
+    SimplifiedEnemyValues(EO1Enemies.FAERIE, TrueSVCriteria(),
+                          attributes=EnemyAttributes(
+                              damage_type_immunity=[EO1Element.FIRE, EO1Element.ICE, EO1Element.THUNDER],
+                              skills_body_use=[EO1BodyPart.HEAD]
+                          )), # Fire Ice Thunder Immunity # Use Head
+    SimplifiedEnemyValues(EO1Enemies.REDBEAK, TrueSVCriteria(),
+                          attributes=EnemyAttributes(
+                              damage_type_immunity=[EO1Element.FIRE]
+                          )), # Fire Immunity
+    SimplifiedEnemyValues(EO1Enemies.IMMOA, TrueSVCriteria(),
+                          attributes=EnemyAttributes(
+                              skills_body_use=[EO1BodyPart.LEG]
+                          )), # Use Leg
+
+    SimplifiedEnemyValues(EO1Enemies.SICKWOOD, TrueSVCriteria(),
+                          attributes=EnemyAttributes(
+                              skills_body_use=[EO1BodyPart.HEAD]
+                          )), # Use Head
+    SimplifiedEnemyValues(EO1Enemies.CRUELLA,
+                          AndSVCriteria([
+                              PartySVCriteria(
+                                  valid_class_criteria=CanUseActiveSkill(
+                                      skill_count=2,
+                                      skill_viability_level=SkillViabilityLevel.NORMAL
+                                  ),
+                                  extra_criteria=[
+                                      AdventurerMatch(
+                                          match_count=2,
+                                          criteria=OrSVCriteria([
+                                              CanUseDamageSkill(skill_power=SkillPower.MEDIUM, damage_type=EO1Element.FIRE),
+                                              CanUseDamageSkill(skill_power=SkillPower.MEDIUM, damage_type=EO1Element.ICE),
+                                              CanUseDamageSkill(skill_power=SkillPower.MEDIUM, damage_type=EO1Element.THUNDER),
+                                              CanInflictAilment(EO1Ailment.HEAD_BIND),
+                                          ])
+                                      ),
+                                  ]
+                              ),
+                              HasAntiStatusSVCriteria()
+                          ]),
+                          attributes=EnemyAttributes(
+                              skills_body_use=[EO1BodyPart.HEAD]
+                          )), # Use Head
+    SimplifiedEnemyValues(EO1Enemies.DIABOLIX,
+                          AndSVCriteria([
+                              PartySVCriteria(
+                                  valid_class_criteria=CanUseActiveSkill(
+                                      skill_count=2,
+                                      skill_viability_level=SkillViabilityLevel.NORMAL
+                                  ),
+                                  extra_criteria=[
+                                      AdventurerMatch(
+                                          match_count=1,
+                                          criteria=OrSVCriteria([
+                                              CanInflictAilment(EO1Ailment.HEAD_BIND),
+                                          ])
+                                      ),
+                                  ]
+                              ),
+                              HasAntiStatusSVCriteria()
+                          ]),
+                          attributes=EnemyAttributes(
+                              skills_body_use=[EO1BodyPart.HEAD]
+                          )), # Use Head
+    SimplifiedEnemyValues(EO1Enemies.OGRE,
+                          PartySVCriteria(
+                              valid_class_criteria=CanUseActiveSkill(
+                                  skill_count=3,
+                                  skill_viability_level=SkillViabilityLevel.NORMAL
+                              ),
+                              extra_criteria=[
+                                  AdventurerMatch(
+                                      match_count=2,
+                                      criteria=OrSVCriteria([
+                                          CanUseDamageSkill(skill_power=SkillPower.MEDIUM, damage_type=EO1Element.FIRE),
+                                          CanUseDamageSkill(skill_power=SkillPower.MEDIUM, damage_type=EO1Element.ICE),
+                                          CanUseDamageSkill(skill_power=SkillPower.MEDIUM, damage_type=EO1Element.THUNDER),
+                                          CanUseAOEHealSkill(),
+                                      ])
+                                  ),
+                              ]
+                          ),
+                          attributes=EnemyAttributes(
+                              skills_body_use=[EO1BodyPart.HEAD], # Bugged, cannot actually use EO1BodyPart.ARM,
+                              can_apply_buff=True,
+
+                          )), # Use Head Arm
+    SimplifiedEnemyValues(EO1Enemies.HUNTER,
+                          PartySVCriteria(
+                              valid_class_criteria=CanUseActiveSkill(
+                                  skill_count=3,
+                                  skill_viability_level=SkillViabilityLevel.NORMAL
+                              ),
+                              extra_criteria=[
+                                  AdventurerMatch(
+                                      match_count=4,
+                                      criteria=OrSVCriteria([
+                                          CanUseDamageSkill(skill_power=SkillPower.MEDIUM, damage_type=EO1Element.SLASH),
+                                          CanUseDamageSkill(skill_power=SkillPower.MEDIUM, damage_type=EO1Element.STAB),
+                                          CanUseDamageSkill(skill_power=SkillPower.MEDIUM, damage_type=EO1Element.BASH),
+                                          CanInflictAilment(EO1Ailment.HEAD_BIND),
+                                          CanUseAOEDamageMitigationSkill(damage_type=EO1Element.FIRE),
+                                          CanUseAOEHealSkill(),
+                                      ])
+                                  ),
+                              ]
+                          ),
+                          attributes=EnemyAttributes(
+                              skills_body_use=[EO1BodyPart.HEAD],
+
+                          )), # Use Head
+    SimplifiedEnemyValues(EO1Enemies.BUD, TrueSVCriteria()),
+
+    SimplifiedEnemyValues(EO1Enemies.IWAOPELN,
+                          PartySVCriteria(
+                              valid_class_criteria=CanUseActiveSkill(
+                                  skill_count=4,
+                                  skill_viability_level=SkillViabilityLevel.NORMAL
+                              ),
+                              extra_criteria=[
+                                  AdventurerMatch(
+                                      match_count=4,
+                                      criteria=OrSVCriteria([
+                                          CanUseDamageSkill(skill_power=SkillPower.MEDIUM, damage_type=EO1Element.ICE),
+                                          CanUseDamageSkill(skill_power=SkillPower.STRONG, damage_type=EO1Element.SLASH),
+                                          CanUseDamageSkill(skill_power=SkillPower.STRONG, damage_type=EO1Element.STAB),
+                                          CanUseDamageSkill(skill_power=SkillPower.STRONG, damage_type=EO1Element.BASH),
+                                          CanInflictAilment(EO1Ailment.HEAD_BIND),
+                                          CanInflictAilment(EO1Ailment.ARM_BIND),
+                                          CanInflictAilment(EO1Ailment.LEG_BIND),
+                                          CanUseAOEDamageMitigationSkill(damage_type=EO1Element.THUNDER),
+                                          CanUseAOEDamageMitigationSkill(damage_type=EO1Element.SLASH),
+                                          CanUseAOEHealSkill(),
+                                      ])
+                                  ),
+                              ]
+                          ),
+                          attributes=EnemyAttributes(
+                              skills_body_use=[EO1BodyPart.HEAD, EO1BodyPart.ARM, EO1BodyPart.LEG],
+                              can_inflict_status_effect=True,
+                              can_inflict_bind=True,
+                          )), # Use Head Arm Leg
+
+    # Stratum 5
+    SimplifiedEnemyValues(EO1Enemies.DARKHARE, TrueSVCriteria(),
+                          attributes=EnemyAttributes(
+                              skills_body_use=[EO1BodyPart.HEAD]
+                          )), # Use Head
+    SimplifiedEnemyValues(EO1Enemies.MAUL, TrueSVCriteria(),
+                          attributes=EnemyAttributes(
+                              skills_body_use=[EO1BodyPart.ARM]
+                          )), # Use Arm
+    SimplifiedEnemyValues(EO1Enemies.BURSTGEL, TrueSVCriteria(),
+                          attributes=EnemyAttributes(
+                              damage_type_immunity=[EO1Element.FIRE],
+                              skills_body_use=[EO1BodyPart.ARM]
+                          )), # Fire Immunity # Use Arm
+    SimplifiedEnemyValues(EO1Enemies.DIREWOLF, TrueSVCriteria(),
+                          attributes=EnemyAttributes(
+                              damage_type_immunity=[EO1Element.FIRE],
+                              skills_body_use=[EO1BodyPart.HEAD]
+                          )), # Fire Immunity # Use Head
+    SimplifiedEnemyValues(EO1Enemies.MUSKOID, TrueSVCriteria(),
+                          attributes=EnemyAttributes(
+                              skills_body_use=[EO1BodyPart.HEAD]
+                          )), # Use Head
+    SimplifiedEnemyValues(EO1Enemies.KINGFROG, TrueSVCriteria(),
+                          attributes=EnemyAttributes(
+                              skills_body_use=[EO1BodyPart.HEAD]
+                          )), # Use Head
+    SimplifiedEnemyValues(EO1Enemies.KINGAPIS, TrueSVCriteria(),
+                          attributes=EnemyAttributes(
+                              skills_body_use=[EO1BodyPart.LEG]
+                          )), # Use Leg
+    SimplifiedEnemyValues(EO1Enemies.CLAWLORD, TrueSVCriteria(),
+                          attributes=EnemyAttributes(
+                              skills_body_use=[EO1BodyPart.HEAD]
+                          )), # Use Head
+    SimplifiedEnemyValues(EO1Enemies.SILKER, TrueSVCriteria(),
+                          attributes=EnemyAttributes(
+                              skills_body_use=[EO1BodyPart.HEAD]
+                          )), # Use Head
+    SimplifiedEnemyValues(EO1Enemies.VARAHA, TrueSVCriteria(),
+                          attributes=EnemyAttributes(
+                              skills_body_use=[EO1BodyPart.LEG]
+                          )), # Use Leg
+    SimplifiedEnemyValues(EO1Enemies.ARMOROLL, TrueSVCriteria(),
+                          attributes=EnemyAttributes(
+                          )),
+    SimplifiedEnemyValues(EO1Enemies.HELLBULL, TrueSVCriteria(),
+                          attributes=EnemyAttributes(
+                              skills_body_use=[EO1BodyPart.LEG]
+                          )), # Use Leg
+    SimplifiedEnemyValues(EO1Enemies.KINGYANA, TrueSVCriteria(),
+                          attributes=EnemyAttributes(
+                              skills_body_use=[EO1BodyPart.ARM]
+                          )), # Use Arm
+
+    SimplifiedEnemyValues(EO1Enemies.DESOULER, TrueSVCriteria(),
+                          attributes=EnemyAttributes(
+                              skills_body_use=[EO1BodyPart.HEAD]
+                          )), # Use Head
+    SimplifiedEnemyValues(EO1Enemies.KINGDILE, TrueSVCriteria(),
+                          attributes=EnemyAttributes(
+                              skills_body_use=[EO1BodyPart.HEAD]
+                          )), # Use Head
+    SimplifiedEnemyValues(EO1Enemies.TREETUSK, TrueSVCriteria(),
+                          attributes=EnemyAttributes(
+                              skills_body_use=[EO1BodyPart.HEAD, EO1BodyPart.LEG]
+                          )), # Use Head Leg
+    SimplifiedEnemyValues(EO1Enemies.DINOLICH, TrueSVCriteria(),
+                          attributes=EnemyAttributes(
+                              skills_body_use=[EO1BodyPart.HEAD]
+                          )), # Use Head
+
+    SimplifiedEnemyValues(EO1Enemies.REN,
+                          PartySVCriteria(
+                              valid_class_criteria=CanUseActiveSkill(
+                                  skill_count=4,
+                                  skill_viability_level=SkillViabilityLevel.NORMAL
+                              ),
+                              extra_criteria=[
+                                  AdventurerMatch(
+                                      match_count=4,
+                                      criteria=OrSVCriteria([
+                                          CanUseDamageSkill(skill_power=SkillPower.STRONG, damage_type=EO1Element.FIRE),
+                                          CanUseDamageSkill(skill_power=SkillPower.STRONG, damage_type=EO1Element.THUNDER),
+                                          CanInflictAilment(EO1Ailment.HEAD_BIND),
+                                          CanInflictAilment(EO1Ailment.ARM_BIND),
+                                          CanInflictAilment(EO1Ailment.LEG_BIND),
+                                          CanUseAOEDamageMitigationSkill(damage_type=EO1Element.SLASH),
+                                          CanUseAOEHealSkill(),
+                                      ])
+                                  ),
+                              ]
+                          ),
+                          attributes=EnemyAttributes(
+                              damage_type_immunity=[EO1Element.ICE],
+                              skills_body_use=[EO1BodyPart.HEAD, EO1BodyPart.ARM, EO1BodyPart.LEG]
+                          )), # Ice Immunity # Use Head Arm Leg # AOE physical, Buff
+    SimplifiedEnemyValues(EO1Enemies.TLACHTGA,
+                          PartySVCriteria(
+                              valid_class_criteria=CanUseActiveSkill(
+                                  skill_count=4,
+                                  skill_viability_level=SkillViabilityLevel.NORMAL
+                              ),
+                              extra_criteria=[
+                                  AdventurerMatch(
+                                      match_count=2,
+                                      criteria=OrSVCriteria([
+                                          CanUseDamageSkill(skill_power=SkillPower.STRONG, damage_type=EO1Element.SLASH),
+                                          CanUseDamageSkill(skill_power=SkillPower.STRONG, damage_type=EO1Element.STAB),
+                                          CanUseDamageSkill(skill_power=SkillPower.STRONG, damage_type=EO1Element.BASH),
+                                          CanInflictAilment(EO1Ailment.HEAD_BIND),
+                                      ])
+                                  ),
+                              ]
+                          ),
+                          attributes=EnemyAttributes(
+                              skills_body_use=[EO1BodyPart.HEAD],
+                              can_inflict_status_effect=True,
+                              can_inflict_bind=True
+                          )), # Use Head # TODO HasAntiBindSVCriteria(), HasAntiStatusSVCriteria(),
+    SimplifiedEnemyValues(EO1Enemies.ETREANT,
+                          PartySVCriteria(
+                              valid_class_criteria=CanUseActiveSkill(
+                                  skill_count=4,
+                                  skill_viability_level=SkillViabilityLevel.NORMAL
+                              ),
+                              extra_criteria=[
+                                  AdventurerMatch(
+                                      match_count=5,
+                                      criteria=OrSVCriteria([
+                                          CanUseDamageSkill(skill_power=SkillPower.STRONG),
+                                          CanInflictAilment(EO1Ailment.HEAD_BIND),
+                                          CanInflictAilment(EO1Ailment.ARM_BIND),
+                                          CanInflictAilment(EO1Ailment.LEG_BIND),
+                                          CanUseAOEDamageMitigationSkill(damage_type=EO1Element.STAB),
+                                          CanUseAOEDamageMitigationSkill(damage_type=EO1Element.BASH),
+                                          CanUseAOEHealSkill(),
+                                      ])
+                                  ),
+                              ]
+                          ),
+                          attributes=EnemyAttributes(
+                              skills_body_use=[EO1BodyPart.HEAD, EO1BodyPart.ARM, EO1BodyPart.LEG],
+                              can_apply_buff=True
+                          )), # Use Head Arm Leg # AOE Stab and Bash
+
     #    # Stratum 6
     #    SimplifiedEnemyValues(EO1Enemies.FLAMEGEL), # Slash Stab Bash Fire Immunity # Use Head
     #    SimplifiedEnemyValues(EO1Enemies.HAZEFLY), # Use Leg

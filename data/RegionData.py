@@ -67,7 +67,11 @@ class EO1Regions:
     B16F_SECRET_AREA = "B16F Secret Area"
     B16F_EAST_SECRET_AREA = "B16F East Secret Area"
     B17F_MAIN = "B17F Main"
-    B17F_SECRET_AREA = "B17F Secret Area"
+    #B17F_SECRET_AREA = "B17F Secret Area"
+    B17F_SECRET_AREA_NORTH_EAST = "B17F Secret Area North East"
+    B17F_SECRET_AREA_NORTH = "B17F Secret Area North"
+    B17F_SECRET_AREA_SOUTH_EAST = "B17F Secret Area South East"
+    B17F_SECRET_AREA_WEST = "B17F Secret Area West"
     B18F_MAIN = "B18F Main"
     B18F_WEST = "B18F West"
     B19F_MAIN = "B19F Main"
@@ -79,12 +83,14 @@ class EO1Regions:
     # This probably needs to be redone, especially to account for unavoidable fights.
     B21F_MAIN = "B21F Main" # West area.
     B21F_EAST = "B21F East"
-    B21F_SOUTH = "B21F South"
+    B21F_SOUTH_EAST = "B21F South East"
+    B21F_SOUTH_WEST = "B21F South West"
     B22F_MAIN = "B22F Main" # North area
-    B22F_NORTH_WEST = "B22F North West"
-    B22F_SOUTH_WEST = "B22F South West"
-    B22F_SOUTH_EAST = "B22F South East"
-    B22F_SOUTH = "B22F South"
+    B22F_NORTH_WEST_DEAD_END = "B22F North West Dead End"
+    B22F_SOUTH_WEST_DEAD_END = "B22F South West Dead End"
+    B22F_SOUTH_EAST_DEAD_END = "B22F South East Dead End"
+    B22F_SOUTH_AREA_WEST = "B22F South Area West"
+    B22F_SOUTH_AREA_EAST = "B22F South Area East"
     B22F_WEST_ELEVATOR = "B22F West Elevator"
     B23F_MAIN = "B23F Main"
     B23F_SOUTH_WEST = "B23F South West"
@@ -176,7 +182,10 @@ STRATUM_4: set[str] = {
     EO1Regions.B16F_SECRET_AREA,
     EO1Regions.B16F_EAST_SECRET_AREA,
     EO1Regions.B17F_MAIN,
-    EO1Regions.B17F_SECRET_AREA,
+    EO1Regions.B17F_SECRET_AREA_NORTH_EAST,
+    EO1Regions.B17F_SECRET_AREA_NORTH,
+    EO1Regions.B17F_SECRET_AREA_SOUTH_EAST,
+    EO1Regions.B17F_SECRET_AREA_WEST,
     EO1Regions.B18F_MAIN,
     EO1Regions.B18F_WEST,
     EO1Regions.B19F_MAIN,
@@ -189,12 +198,14 @@ STRATUM_4: set[str] = {
 STRATUM_5: set[str] = {
     EO1Regions.B21F_MAIN,
     EO1Regions.B21F_EAST,
-    EO1Regions.B21F_SOUTH,
+    EO1Regions.B21F_SOUTH_EAST,
+    EO1Regions.B21F_SOUTH_WEST,
     EO1Regions.B22F_MAIN,
-    EO1Regions.B22F_NORTH_WEST,
-    EO1Regions.B22F_SOUTH_WEST,
-    EO1Regions.B22F_SOUTH_EAST,
-    EO1Regions.B22F_SOUTH,
+    EO1Regions.B22F_NORTH_WEST_DEAD_END,
+    EO1Regions.B22F_SOUTH_WEST_DEAD_END,
+    EO1Regions.B22F_SOUTH_EAST_DEAD_END,
+    EO1Regions.B22F_SOUTH_AREA_WEST,
+    EO1Regions.B22F_SOUTH_AREA_EAST,
     EO1Regions.B22F_WEST_ELEVATOR,
     EO1Regions.B23F_MAIN,
     EO1Regions.B23F_SOUTH_WEST,
@@ -445,16 +456,24 @@ ALL_REGION_DATA: list[EO1RegionData] = [
         StairsUp(EO1Regions.B15F_SECRET_AREA),
     ], [0x75, 0x76, 0x77, 0x78, 0x79], [EO1Enemies.SICKWOOD]),
     EO1RegionData(EO1Regions.B16F_EAST_SECRET_AREA, 16, [
-        StairsDown(EO1Regions.B17F_SECRET_AREA)
+        StairsDown(EO1Regions.B17F_SECRET_AREA_NORTH_EAST)
     ], [0x73]),
 
     # B17F
     EO1RegionData(EO1Regions.B17F_MAIN, 17, [
         StairsDown(EO1Regions.B18F_MAIN)
     ], [0x7A, 0x7B, 0x7C, 0x7D, 0x7E], [EO1Enemies.SICKWOOD]),
-    EO1RegionData(EO1Regions.B17F_SECRET_AREA, 17, [],
-                  [0x7F, 0x81, 0x83],
-                  [EO1Enemies.KINGDILE, EO1Enemies.DINOLICH, EO1Enemies.DESOULER, EO1Enemies.MANTICOR]),
+    EO1RegionData(EO1Regions.B17F_SECRET_AREA_NORTH_EAST, 17, [
+        MandatoryFight(EO1Regions.B17F_SECRET_AREA_NORTH, [EO1Enemies.DINOLICH, EO1Enemies.DINOLICH, EO1Enemies.DINOLICH], "Dinolich"),
+        MandatoryFight(EO1Regions.B17F_SECRET_AREA_SOUTH_EAST, [EO1Enemies.DESOULER], "Desouler"),
+    ], [0x7F, 0x81], []),
+    EO1RegionData(EO1Regions.B17F_SECRET_AREA_NORTH, 17, [],
+                  [0x7F], [EO1Enemies.KINGDILE, EO1Enemies.DINOLICH]),
+    EO1RegionData(EO1Regions.B17F_SECRET_AREA_SOUTH_EAST, 17, [
+        MandatoryFight(EO1Regions.B17F_SECRET_AREA_WEST, [EO1Enemies.KINGDILE])
+    ], [0x81], [EO1Enemies.KINGDILE, EO1Enemies.DESOULER]),
+    EO1RegionData(EO1Regions.B17F_SECRET_AREA_WEST, 17, [],
+                  [0x83], [EO1Enemies.KINGDILE, EO1Enemies.DESOULER, EO1Enemies.MANTICOR]),
 
     # B18F
     EO1RegionData(EO1Regions.B18F_MAIN, 18, [
@@ -486,8 +505,8 @@ ALL_REGION_DATA: list[EO1RegionData] = [
     # Stratum 5
     EO1RegionData(EO1Regions.B21F_MAIN, 21, [
         MandatoryFight(EO1Regions.B21F_EAST, [EO1Enemies.REN, EO1Enemies.TLACHTGA]),
-        StairsDown(EO1Regions.B22F_NORTH_WEST, "North West"),
-        StairsDown(EO1Regions.B22F_SOUTH_WEST, "South West"),
+        StairsDown(EO1Regions.B22F_NORTH_WEST_DEAD_END, "North West"),
+        StairsDown(EO1Regions.B22F_SOUTH_WEST_DEAD_END, "South West"),
         Elevator(EO1Regions.B25F_WEST_ELEVATOR, "B25F"),
         Elevator(EO1Regions.B22F_WEST_ELEVATOR, "B22F"),
         Elevator(EO1Regions.B23F_MAIN, "B23F"),
@@ -496,33 +515,41 @@ ALL_REGION_DATA: list[EO1RegionData] = [
     EO1RegionData(EO1Regions.B21F_EAST, 21, [
         StairsDown(EO1Regions.B22F_MAIN),
         Elevator(EO1Regions.B25F_MAIN, "B25F"),
-        Elevator(EO1Regions.B22F_SOUTH, "B22F"),
+        Elevator(EO1Regions.B22F_SOUTH_AREA_EAST, "B22F"),
         Elevator(EO1Regions.B23F_EAST_ELEVATOR, "B23F"),
         Elevator(EO1Regions.B24F_NORTH, "B24F"),
     ], [0x98, 0x99, 0x9A, 0x9B], [EO1Enemies.DINOLICH]),
-    EO1RegionData(EO1Regions.B21F_SOUTH, 21, [], [0x99, 0x9B, 0x9C], [EO1Enemies.KINGDILE]),
+    EO1RegionData(EO1Regions.B21F_SOUTH_EAST, 21, [
+        MandatoryFight(EO1Regions.B21F_SOUTH_WEST, [EO1Enemies.KINGDILE])
+    ], [0x99, 0x9B], [EO1Enemies.KINGDILE]),
+    EO1RegionData(EO1Regions.B21F_SOUTH_WEST, 21, [], [0x9B, 0x9C], [EO1Enemies.KINGDILE]),
 
     EO1RegionData(EO1Regions.B22F_MAIN, 22, [
         StairsDown(EO1Regions.B23F_NORTH_EAST, "North East"),
         StairsDown(EO1Regions.B23F_MAIN, "North West"),
     ], [0x9D, 0x9E, 0x9F, 0xA0], [EO1Enemies.DINOLICH]),
-    EO1RegionData(EO1Regions.B22F_NORTH_WEST, 22, [], []), # Cannot trigger encounters here (only one tile).
-    EO1RegionData(EO1Regions.B22F_SOUTH_WEST, 22, [], [0x9D]),
-    EO1RegionData(EO1Regions.B22F_SOUTH_EAST, 22, [], []), # Cannot trigger encounters here (only one tile).
-    EO1RegionData(EO1Regions.B22F_SOUTH, 22, [
-        StairsUp(EO1Regions.B21F_SOUTH)
-    ], [0x9E, 0xA0, 0xA1, 0xA2], [EO1Enemies.DESOULER, EO1Enemies.KINGDILE]),
+    EO1RegionData(EO1Regions.B22F_NORTH_WEST_DEAD_END, 22, [], []), # Cannot trigger encounters here (only one tile).
+    EO1RegionData(EO1Regions.B22F_SOUTH_WEST_DEAD_END, 22, [], [0x9D]),
+    EO1RegionData(EO1Regions.B22F_SOUTH_EAST_DEAD_END, 22, [], []), # Cannot trigger encounters here (only one tile).
+    EO1RegionData(EO1Regions.B22F_SOUTH_AREA_WEST, 22, [
+        MandatoryFight(EO1Regions.B22F_SOUTH_AREA_EAST, [EO1Enemies.DESOULER, EO1Enemies.DESOULER])
+    ], [0x9E, 0xA0, 0xA1], [EO1Enemies.DESOULER, EO1Enemies.KINGDILE]),
+    EO1RegionData(EO1Regions.B22F_SOUTH_AREA_EAST, 22, [
+        MandatoryFight(EO1Regions.B22F_SOUTH_AREA_WEST, [EO1Enemies.DESOULER, EO1Enemies.DESOULER]),
+        StairsUp(EO1Regions.B21F_SOUTH_EAST)
+    ], [0xA2], [EO1Enemies.DESOULER]),
+
     EO1RegionData(EO1Regions.B22F_WEST_ELEVATOR, 22, [], [0xA2]),
 
     EO1RegionData(EO1Regions.B23F_MAIN, 23, [
         StairsDown(EO1Regions.B24F_NORTH, "North East"),
         StairsDown(EO1Regions.B24F_MAIN, "North West"),
-        StairsUp(EO1Regions.B22F_SOUTH, "South West"),
+        StairsUp(EO1Regions.B22F_SOUTH_AREA_WEST, "South West"),
         StairsUp(EO1Regions.B22F_MAIN, "North West")
     ], [0xA3, 0xA4, 0xA5, 0xA6, 0xA7], [EO1Enemies.KINGDILE, EO1Enemies.DESOULER]),
     EO1RegionData(EO1Regions.B23F_SOUTH_WEST, 23, [], [0xA9, 0xAA], [EO1Enemies.KINGDILE]),
     EO1RegionData(EO1Regions.B23F_SOUTH_EAST, 23, [
-        StairsUp(EO1Regions.B22F_SOUTH_EAST)
+        StairsUp(EO1Regions.B22F_SOUTH_EAST_DEAD_END)
     ], [0xA9, 0xAA]),
     EO1RegionData(EO1Regions.B23F_NORTH_EAST, 23, [], [0xA3]),
     EO1RegionData(EO1Regions.B23F_EAST_ELEVATOR, 23, [], [0xA9, 0xAA]),
