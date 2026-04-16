@@ -84,10 +84,6 @@ def create_all_locations(world: EtrianOdysseyWorld) -> None:
     if bool(world.options.compendium_sanity.value):
         create_compendium_locations(world)
 
-    #for region in world.get_regions():
-    #create_regular_locations(world)
-    #create_events(world)
-
 def create_codex_locations(world: EtrianOdysseyWorld) -> None:
     radha_hall_region = world.get_region(EO1Regions.RADHA_HALL)
     max_stratum = get_max_stratum_for_goal(EO1Goal(world.options.goal.value))
@@ -310,4 +306,4 @@ def create_events(world: EtrianOdysseyWorld) -> None:
     create_event(EVENT_ELEVATOR_ACTIVATED, EO1Regions.B21F_SOUTH_WEST, True_())
 
     # Card Key
-    create_event(EVENT_CARD_KEY_OBTAINED, EO1Regions.B21F_MAIN, True_()) # todo check for the fight logic
+    create_event(EVENT_CARD_KEY_OBTAINED, EO1Regions.B21F_MAIN, CanDefeatEncounter((EO1Enemies.REN, EO1Enemies.TLACHTGA)))

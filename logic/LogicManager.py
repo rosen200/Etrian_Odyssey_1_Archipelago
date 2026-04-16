@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from BaseClasses import CollectionState
+from .SustainProcessor import SustainProcessor
 from ..Items import EtrianOdysseyItemType, EtrianOdysseyItem
 from ..data.ItemData import *
 from ..data.InventoryItemData import *
@@ -41,6 +42,7 @@ class LogicManager:
     compendium_processor: CompendiumProcessor
     conditional_drop_processor: ConditionalDropProcessor
     #shop_unlock_processor: ShopUnlockProcessor
+    sustain_processor: SustainProcessor
 
     def __init__(self, options: EtrianOdysseyOptions, player_id: int, fill_default=True) -> None:
         self.logic_data = AllLogicData(fill_default)
@@ -50,6 +52,7 @@ class LogicManager:
         self.player_id = player_id
 
         self.class_processor = ClassProcessor(player_id)
+        self.sustain_processor = SustainProcessor()
         self.enemy_battle_processor = self.__create_single_enemy_battle_processor_from_options(options)
         self.encounter_battle_processor = self.__create_encounter_battle_processor_from_options(options)
         self.encounter_group_battle_processor = self.__create_encounter_group_battle_processor_from_options(options)
@@ -62,7 +65,7 @@ class LogicManager:
 
         if fill_default:
             # Initialize class data
-            self.class_processor.initialize_data(self.logic_data.class_data)
+            self.class_processor.initialize_data(self.logic_data.class_data, bool(options.remove_skills_requirements))
             pass
 
     def copy(self) -> LogicManager:

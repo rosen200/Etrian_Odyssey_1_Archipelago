@@ -92,6 +92,7 @@ def get_random_filler_money(world: EtrianOdysseyWorld) -> str:
     return result[0]
 
 def get_random_filler_item_name(world: EtrianOdysseyWorld) -> str:
+    # todo handle equipments?
     item_roll_value = world.random.randint(0, 100)
     if item_roll_value <= 20: # 20% of items are money.
         return get_random_filler_money(world)
@@ -267,14 +268,23 @@ def get_shuffled_skill_items(world: EtrianOdysseyWorld) -> list[EtrianOdysseyIte
     return [create_item_from_skill_item(skill_item, world.player) for skill_item in shuffled_skill_items]
 
 def get_starting_classes(world: EtrianOdysseyWorld) -> list[EO1ClassData]:
-    if world.options.class_sanity_mode == ClassSanityType.vanilla:
-        raise Exception("Not implemented")
-    elif world.options.class_sanity_mode == ClassSanityType.start_with_all:
+    class_sanity_mode = ClassSanityType(world.options.class_sanity_mode.value)
+    if class_sanity_mode == ClassSanityType.vanilla:
+        return [
+            CLASS_DATA_BY_NAME[EO1Class.LANDSKNECHT],
+            CLASS_DATA_BY_NAME[EO1Class.SURVIVALIST],
+            CLASS_DATA_BY_NAME[EO1Class.PROTECTOR],
+            CLASS_DATA_BY_NAME[EO1Class.DARK_HUNTER],
+            CLASS_DATA_BY_NAME[EO1Class.MEDIC],
+            CLASS_DATA_BY_NAME[EO1Class.ALCHEMIST],
+            CLASS_DATA_BY_NAME[EO1Class.TROUBADOUR]
+        ]
+    elif class_sanity_mode == ClassSanityType.start_with_all:
         return ALL_CLASS_DATA
-    elif world.options.class_sanity_mode == ClassSanityType.shuffle_availability:
+    elif class_sanity_mode == ClassSanityType.shuffle_availability:
         count = world.options.starting_class_count.value
         return world.random.sample(ALL_CLASS_DATA, k=count)
-    raise Exception("Not implemented")
+    raise Exception(f"Unknown Class Sanity Mode {class_sanity_mode}")
 
 def get_shuffled_classes(world: EtrianOdysseyWorld) -> list[EtrianOdysseyItem]:
     missing_classes = [class_data for class_data in ALL_CLASS_DATA if class_data.name not in world.starting_classes]
@@ -291,7 +301,6 @@ def get_shuffled_key_items(world: EtrianOdysseyWorld) -> list[EtrianOdysseyItem]
 
 def create_all_items(world: EtrianOdysseyWorld) -> list[EtrianOdysseyItem]:
 
-    #itempool += [world.create_filler() for _ in range(needed_number_of_filler_items)]
     pool = []
     pool += get_progressive_level_cap_items(world)
     pool += get_progressive_floor_limit_items(world)
@@ -309,7 +318,6 @@ def create_all_items(world: EtrianOdysseyWorld) -> list[EtrianOdysseyItem]:
                         "Please add more locations or reduce the amount of progression items "
                         "(level cap, floor limit, class, skills)")
 
-    # todo handle equipments?
     pool += [world.create_filler() for _ in range(needed_number_of_filler_items)]
 
     return pool

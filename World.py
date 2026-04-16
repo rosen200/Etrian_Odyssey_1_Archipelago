@@ -23,6 +23,7 @@ from . import Items, Locations, Regions, Rules, WebWorld
 from base64 import b64encode
 from worlds.Files import APPlayerContainer
 from .Rules import *
+from .Patch import *
 #from rule_builder.cached_world import CachedRuleBuilderWorld
 
 
@@ -153,95 +154,7 @@ class EtrianOdysseyWorld(World):
     def generate_output(self, output_directory: str) -> None:
         multiworld = self.multiworld
         player = self.player
-        output_data = {
-            "Version": GAME_VERSION,
-            "Seed": multiworld.seed_name,
-            "Slot": player,
-            "Name": self.player_name,
-            "InitialValues": {},
-            "TreasureBoxes": []
-        }
-
-        if self.options.level_cap_mode != 0:
-            output_data["InitialValues"]["level_cap"] = self.initial_level_cap
-        if self.options.floor_limit_mode != 0:
-            output_data["InitialValues"]["floor_limit"] = self.initial_floor_limit
-
-        output_data["ShopUnlockMaterialCostDivider"] = self.options.shop_unlock_material_cost_divider.value
-
-        output_data["InitialValues"]["experience_modifier"] = int(self.options.experience_modifier)
-
-        output_data["InitialValues"]["landsknecht_unlocked"] = EO1Class.LANDSKNECHT in self.starting_classes
-        output_data["InitialValues"]["survivalist_unlocked"] = EO1Class.SURVIVALIST in self.starting_classes
-        output_data["InitialValues"]["protector_unlocked"] = EO1Class.PROTECTOR in self.starting_classes
-        output_data["InitialValues"]["dark_hunter_unlocked"] = EO1Class.DARK_HUNTER in self.starting_classes
-        output_data["InitialValues"]["medic_unlocked"] = EO1Class.MEDIC in self.starting_classes
-        output_data["InitialValues"]["alchemist_unlocked"] = EO1Class.ALCHEMIST in self.starting_classes
-        output_data["InitialValues"]["troubadour_unlocked"] = EO1Class.TROUBADOUR in self.starting_classes
-        output_data["InitialValues"]["ronin_unlocked"] = EO1Class.RONIN in self.starting_classes
-        output_data["InitialValues"]["hexer_unlocked"] = EO1Class.HEXER in self.starting_classes
-
-        # TODO (once implemented) export initial skills unlock.
-        # Handle Starting Skills.
-        skill_values: list[int] = []
-        for index in range(9):
-            skill_values.append(0)
-
-        cumulative_skill_items: list[SkillItem] = []
-        for skill_item in self.starting_skills:
-            skill_values = apply_skill_item_to_values(skill_item, skill_values, cumulative_skill_items)
-            cumulative_skill_items.append(skill_item)
-
-        for class_data in ALL_CLASS_DATA:
-            output_data["InitialValues"][f"{class_data.name.lower().replace(' ', '_')}_skills"] = skill_values[class_data.class_id]
-
-        # Handle location item patching.
-        for location in multiworld.get_locations(player):
-            if location.name in EVENT_BY_NAME:
-                continue
-
-            location_id = ALL_LOCATIONS_ID_BY_NAME[location.name]
-            location_type = ALL_LOCATIONS_BY_ID[location_id].location_type
-            if location_type == EtrianOdysseyLocationType.TREASURE_BOX:
-                treasure_data = ALL_TREASURE_BY_LOCATION_ID[location_id]
-                treasure_type = 0
-                treasure_value = 0
-                if location.item.player != player:
-                    treasure_type = 4
-                    treasure_value = 0
-                else:
-                    item_id = ITEMS_ID_BY_NAME[location.item.name]
-                    item_type = ALL_ITEMS_BY_ID[item_id].item_type
-                    if item_type == EtrianOdysseyItemType.MONEY:
-                        treasure_type = 2
-                        treasure_value = ALL_MONEY_BY_ID[item_id].amount
-                    elif item_type == EtrianOdysseyItemType.INVENTORY:
-                        treasure_type = 3
-                        treasure_value = ITEM_PER_AP_ITEM_ID[item_id].item_id
-                    #elif item_type == EtrianOdysseyItemType.PROGRESSIVE_FLOOR_LIMIT:
-                    #    treasure_type = 5
-                    #    treasure_value = ALL_PROGRESSIVE_FLOOR_BY_ITEM_ID[item_id].floor_amount
-                    #elif item_type == EtrianOdysseyItemType.PROGRESSIVE_LEVEL_CAP:
-                    #    treasure_type = 6
-                    #    treasure_value = ALL_PROGRESSIVE_LEVEL_CAP_BY_ITEM_ID[item_id].level_amount
-                    #elif item_type == EtrianOdysseyItemType.CLASS:
-                    #    treasure_type = 7
-                    #    treasure_value = ALL_CLASS_BY_ITEM_ID[item_id].class_id
-                    else:
-                        treasure_type = 8
-                        treasure_value = 0
-
-
-                def generate_treasure_box_patch_data(floor: int, chest_id: int, type: int, value: int) -> dict[str, int]:
-                    return {
-                        "floor": floor,
-                        "treasure_id": chest_id,
-                        "treasure_type": type,
-                        "treasure_value": value
-                    }
-
-                output_data["TreasureBoxes"].append(generate_treasure_box_patch_data(treasure_data.floor_number - 1, treasure_data.chest_id, treasure_type, treasure_value))
-
+        output_data = generate_output(self)
         apeo1 = EO1Container(
             path=os.path.join(
                 output_directory, f"{multiworld.get_out_file_name_base(player)}{EO1Container.patch_file_ending}"

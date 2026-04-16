@@ -2,3 +2,4 @@
 LICENSE
 .apignore
 README.md
+/test/**

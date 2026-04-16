@@ -18,7 +18,6 @@ class ClassProcessor:
         self.player_id = player_id
 
     def __is_skill_unlocked(self, skill_id: int, state: CollectionState) -> bool:
-        # todo Support various unlock conditions.
         skill_unlocks = SKILL_UNLOCK_DATA_BY_SKILL_ID[skill_id]
 
         for skill_unlock in skill_unlocks:
@@ -26,11 +25,6 @@ class ClassProcessor:
                 return True
 
         return False
-        #if state.has(ALL_SKILLS.ap_item_name, self.player_id):
-        #    return True
-
-        #skill_data = SKILL_DATA_BY_ID[skill_id]
-        #return state.has(skill_data.get_full_name(), self.player_id)
 
     def __all_skills_unlocked(self, all_skill_id: set[int], state: CollectionState) -> bool:
         for skill_id in all_skill_id:
@@ -93,19 +87,19 @@ class ClassProcessor:
 
         return changed
 
-    def initialize_data(self, class_data: ClassLogicData):
-        class_data.landsknecht = self.__initialize_class_data(EO1Class.LANDSKNECHT, LANDSKNECHT_SKILLS)
-        class_data.survivalist = self.__initialize_class_data(EO1Class.SURVIVALIST, SURVIVALIST_SKILLS)
-        class_data.protector = self.__initialize_class_data(EO1Class.PROTECTOR, PROTECTOR_SKILLS)
-        class_data.dark_hunter = self.__initialize_class_data(EO1Class.DARK_HUNTER, DARK_HUNTER_SKILLS)
-        class_data.medic = self.__initialize_class_data(EO1Class.MEDIC, MEDIC_SKILLS)
-        class_data.alchemist = self.__initialize_class_data(EO1Class.ALCHEMIST, ALCHEMIST_SKILLS)
-        class_data.troubadour = self.__initialize_class_data(EO1Class.TROUBADOUR, TROUBADOUR_SKILLS)
-        class_data.ronin = self.__initialize_class_data(EO1Class.RONIN, RONIN_SKILLS)
-        class_data.hexer = self.__initialize_class_data(EO1Class.HEXER, HEXER_SKILLS)
+    def initialize_data(self, class_data: ClassLogicData, remove_skills_requirements: bool):
+        class_data.landsknecht = self.__initialize_class_data(EO1Class.LANDSKNECHT, LANDSKNECHT_SKILLS, remove_skills_requirements)
+        class_data.survivalist = self.__initialize_class_data(EO1Class.SURVIVALIST, SURVIVALIST_SKILLS, remove_skills_requirements)
+        class_data.protector = self.__initialize_class_data(EO1Class.PROTECTOR, PROTECTOR_SKILLS, remove_skills_requirements)
+        class_data.dark_hunter = self.__initialize_class_data(EO1Class.DARK_HUNTER, DARK_HUNTER_SKILLS, remove_skills_requirements)
+        class_data.medic = self.__initialize_class_data(EO1Class.MEDIC, MEDIC_SKILLS, remove_skills_requirements)
+        class_data.alchemist = self.__initialize_class_data(EO1Class.ALCHEMIST, ALCHEMIST_SKILLS, remove_skills_requirements)
+        class_data.troubadour = self.__initialize_class_data(EO1Class.TROUBADOUR, TROUBADOUR_SKILLS, remove_skills_requirements)
+        class_data.ronin = self.__initialize_class_data(EO1Class.RONIN, RONIN_SKILLS, remove_skills_requirements)
+        class_data.hexer = self.__initialize_class_data(EO1Class.HEXER, HEXER_SKILLS, remove_skills_requirements)
         class_data.set_stale(True)
 
-    def __initialize_class_data(self, class_name: str, class_skill_data: list[EO1SkillData]) -> SingleClassLogicData:
+    def __initialize_class_data(self, class_name: str, class_skill_data: list[EO1SkillData], remove_skills_requirements: bool) -> SingleClassLogicData:
         new_class_data = SingleClassLogicData()
         new_class_data.class_name = class_name
         new_class_data.class_unlocked = False
@@ -132,7 +126,14 @@ class ClassProcessor:
             skill_data.skill_usable = False
             skill_data.skill_unlocked = False
             skill_data.required_skills = set()
-            skill_data.required_level = 1 # todo validate 1 or 0
+            skill_data.required_level = 1
+
+            if remove_skills_requirements:
+                if skill.id in SKILL_HARD_DEPENDENCIES:
+                    skill_data.required_level += 1
+                    skill_data.required_skills.add(SKILL_HARD_DEPENDENCIES[skill.id])
+                new_class_data.class_skills[skill.id] = skill_data
+                continue
 
             requirements: dict[int, int] = {}
             for required_skill in get_required_skills(skill.id):

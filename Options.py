@@ -124,6 +124,9 @@ class ShuffleGenericStatsIncreaseSkills(DefaultOnToggle):
 class ShuffleGatheringSkills(Toggle):
     display_name = "Shuffle Gathering Skills"
 
+class RemoveSkillsRequirements(Toggle):
+    display_name = "Remove Skills Requirements"
+
 class StartingSkillCount(Range):
     display_name = "Starting Skill Count"
     range_start = 0
@@ -174,6 +177,7 @@ class EtrianOdysseyOptions(PerGameCommonOptions):
     skill_sanity_mode: SkillSanityMode
     shuffle_generic_stats_increase_skills: ShuffleGenericStatsIncreaseSkills
     shuffle_gathering_skills: ShuffleGatheringSkills
+    remove_skills_requirements: RemoveSkillsRequirements
     starting_skill_count: StartingSkillCount
     codex_sanity: CodexSanity
     compendium_sanity: CompendiumSanity
