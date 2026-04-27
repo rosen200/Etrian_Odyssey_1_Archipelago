@@ -6,6 +6,7 @@ from .LogicData import *
 from BaseClasses import CollectionState
 
 from ..data.EnemyData import *
+from ..data.MaxLevelByFloor import *
 
 from enum import Enum
 class DefeatCondition(Enum):
@@ -37,6 +38,9 @@ class SingleEnemyBattleProcessor(ABC):
     #def can_defeat_with_condition(self, enemy_id: int, condition: DropCondition, state: CollectionState, logic_data: AllLogicData) -> bool:
     #    pass
 
+    def max_level_for_defeat(self, logic_data: AllLogicData):
+        return min(logic_data.current_level_cap, MAX_LEVEL_BY_FLOOR[logic_data.current_floor_limit])
+
 class LevelOnlySingleEnemyBattleProcessor(SingleEnemyBattleProcessor):
     def can_survive_enemy(self, enemy_id: int, state: CollectionState, logic_data: AllLogicData) -> bool:
         enemy_data = self.get_enemy_data(enemy_id)
@@ -50,7 +54,7 @@ class LevelOnlySingleEnemyBattleProcessor(SingleEnemyBattleProcessor):
         # For now, just use the raw level.
         effective_enemy_level = enemy_data.level
         #enemy_data.level * (95/100) - 5
-        return logic_data.current_level_cap >= max(1, effective_enemy_level)
+        return self.max_level_for_defeat(logic_data) >= max(1, effective_enemy_level)
 
 class NoLogicSingleEnemyBattleProcessor(SingleEnemyBattleProcessor):
     def can_survive_enemy(self, enemy_id: int, state: CollectionState, logic_data: AllLogicData) -> bool:
