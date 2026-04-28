@@ -6,7 +6,7 @@ from .LogicData import *
 from BaseClasses import CollectionState
 
 from ..data.EnemyData import *
-from ..data.MaxLevelByFloor import *
+from ..data.MaxLevelByFloor import MAX_LEVEL_BY_FLOOR
 
 from enum import Enum
 class DefeatCondition(Enum):

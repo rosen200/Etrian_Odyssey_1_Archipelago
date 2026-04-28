@@ -1,4 +1,4 @@
-# Maximum level random encounter/mandatory boss by floor.
+"""Maximum level random encounter/mandatory boss by floor."""
 MAX_LEVEL_BY_FLOOR = {
     1: 4, # From Clawbug.
     2: 10, # From Fender.
