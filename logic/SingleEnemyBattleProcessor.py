@@ -21,6 +21,8 @@ class DefeatCondition(Enum):
     PHYSICAL = "PHYSICAL"
     NOT_PHYSICAL = "NOT_PHYSICAL"
 
+_MAX_FLOOR = 30
+
 
 class SingleEnemyBattleProcessor(ABC):
     def get_enemy_data(self, enemy_id: int) -> EnemyData:
@@ -39,7 +41,7 @@ class SingleEnemyBattleProcessor(ABC):
     #    pass
 
     def max_level_for_defeat(self, logic_data: AllLogicData):
-        return min(logic_data.current_level_cap, MAX_LEVEL_BY_FLOOR[logic_data.current_floor_limit])
+        return min(logic_data.current_level_cap, MAX_LEVEL_BY_FLOOR[min(logic_data.current_floor_limit, _MAX_FLOOR)])
 
 class LevelOnlySingleEnemyBattleProcessor(SingleEnemyBattleProcessor):
     def can_survive_enemy(self, enemy_id: int, state: CollectionState, logic_data: AllLogicData) -> bool:
